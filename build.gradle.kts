@@ -6,10 +6,6 @@ plugins {
     id("org.jlleitschuh.gradle.ktlint") version "11.6.0"
 }
 
-tasks.withType<org.springframework.boot.gradle.tasks.bundling.BootJar> {
-    mainClass.set("wyship.doong2.bootstrap.WonyoungshipApplicationKt")
-}
-
 allprojects {
     group = "kr.mashup"
     version = "0.0.1-SNAPSHOT"
@@ -48,11 +44,21 @@ subprojects {
         }
     }
 
-    tasks.named("ktlintCheck").configure {
-        dependsOn("build")
-    }
+    tasks {
+        named("ktlintCheck").configure {
+            dependsOn("build")
+        }
 
-    tasks.withType<Test> {
-        useJUnitPlatform()
+        withType<Test> {
+            useJUnitPlatform()
+        }
+
+        getByName("bootJar") {
+            enabled = false
+        }
+
+        getByName("jar") {
+            enabled = true
+        }
     }
 }

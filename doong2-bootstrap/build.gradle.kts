@@ -1,5 +1,8 @@
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
-import org.springframework.boot.gradle.tasks.bundling.BootJar
+
+plugins {
+    application
+}
 
 dependencies {
     implementation(project(":doong2-http"))
@@ -16,7 +19,7 @@ tasks {
         enabled = true
     }
 
-    getByName<BootJar>("bootJar") {
+    getByName<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
         mainClass.set("wyship.doong2.bootstrap.WonyoungshipApplicationKt")
     }
 
