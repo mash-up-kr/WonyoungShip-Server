@@ -63,8 +63,6 @@ jobs:
             # .env 파일 새로 생성
             echo "DOCKER_HUB_USERNAME=${{ secrets.DOCKER_HUB_USERNAME }}" >> .env
             echo "DOCKER_HUB_PASSWORD=${{ secrets.DOCKER_HUB_PASSWORD }}" >> .env
-#            echo "SECRET_MANAGER_TOKEN=${{ secrets.SECRET_MANAGER_TOKEN }}" >> .env
-#            echo "SECRET_MANAGER_WORKSPACE_ID=${{ secrets.SECRET_MANAGER_WORKSPACE_ID }}" >> .env
             
             # 배포 스크립트 실행
             sudo ./deploy.sh
