@@ -6,6 +6,10 @@ plugins {
     id("org.jlleitschuh.gradle.ktlint") version "11.6.0"
 }
 
+tasks.bootJar {
+    enabled = false
+}
+
 allprojects {
     group = "kr.mashup"
     version = "0.0.1-SNAPSHOT"
@@ -53,11 +57,11 @@ subprojects {
             useJUnitPlatform()
         }
 
-        getByName("bootJar") {
+        bootJar {
             enabled = false
         }
 
-        getByName("jar") {
+        jar {
             enabled = true
         }
     }

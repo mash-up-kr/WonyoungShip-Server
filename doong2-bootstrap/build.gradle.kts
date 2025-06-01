@@ -11,12 +11,18 @@ dependencies {
     implementation(project(":doong2-core"))
     implementation(project(":doong2-common"))
 
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-autoconfigure")
 }
 
 tasks {
     bootJar {
         enabled = true
+    }
+
+    named("bootJar") {
+        dependsOn("ktlintFormat")
     }
 
     getByName<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
