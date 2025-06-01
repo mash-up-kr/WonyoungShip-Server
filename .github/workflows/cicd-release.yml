@@ -1,9 +1,13 @@
 name: CI/CD
 
+#on:
+#  release:
+#    types:
+#      - published
+
 on:
-  release:
-    types:
-      - published
+  pull_request:
+    branches: [ develop ]
 
 jobs:
   build-and-push:
