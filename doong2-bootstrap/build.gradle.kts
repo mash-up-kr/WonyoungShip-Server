@@ -1,3 +1,4 @@
+import org.springframework.boot.gradle.tasks.bundling.BootJar
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 plugins {
@@ -25,13 +26,13 @@ tasks {
         dependsOn("ktlintFormat")
     }
 
-    getByName<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
+    getByName<BootJar>("bootJar") {
         mainClass.set("wyship.doong2.bootstrap.WonyoungshipApplicationKt")
     }
 
     getByName<BootBuildImage>("bootBuildImage") {
 
-        imageName.set("${System.getenv("DOCKER_HUB_REGISTRY")}/doong2") // todo. env 세팅
+        imageName.set("wonyoungship/doong2")
 
         // Build 관련 환경 변수 설정
         environment.set(
@@ -61,9 +62,9 @@ tasks {
         // Docker Registry 로그인 정보
         docker {
             publishRegistry {
-                url.set(System.getenv("DOCKER_HUB_REGISTRY"))
-//                username.set(System.getenv("DOCKER_HUB_USERNAME")) //todo. public 이면 노필요
-//                password.set(System.getenv("DOCKER_HUB_PASSWORD"))
+                url.set("docker.io")
+                username.set(System.getenv("DOCKER_HUB_USERNAME"))
+                password.set(System.getenv("DOCKER_HUB_PASSWORD"))
             }
         }
 
