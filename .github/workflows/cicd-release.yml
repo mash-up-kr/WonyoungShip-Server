@@ -54,8 +54,7 @@ jobs:
             cd ~
             
             # deploy.sh 파일 다운로드
-            wget https://raw.githubusercontent.com/mash-up-kr/WonyoungShip-Server/task_#2/script/deploy.sh -O deploy.sh
-            # wget https://raw.githubusercontent.com/mash-up-kr/WonyoungShip-Server/develop/script/deploy.sh -O deploy.sh
+            wget https://raw.githubusercontent.com/mash-up-kr/WonyoungShip-Server/develop/script/deploy.sh -O deploy.sh
             chmod +x deploy.sh
             
             # 기존 .env 파일 삭제 및 새로 생성
