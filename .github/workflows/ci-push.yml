@@ -37,9 +37,7 @@ jobs:
         run: ./gradlew ktlintCheck
 
       - name: 프로젝트 빌드
-        env: #todo. 외부 secret manager 도입 시 필요
-#          SECRET_MANAGER_TOKEN: ${{ secrets.SECRET_MANAGER_TOKEN }}
-#          SECRET_MANAGER_WORKSPACE: ${{ secrets.SECRET_MANAGER_WORKSPACE }}
+        env:
           CURRENT_GIT_SHA: ${{ github.sha }}
           STATUS: PUSH
         run: |

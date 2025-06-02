@@ -1,5 +1,5 @@
-import org.springframework.boot.gradle.tasks.bundling.BootJar
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
+import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
     application
@@ -38,29 +38,20 @@ tasks {
         environment.set(
             mapOf(
                 "BP_JVM_VERSION" to "21",
-                "BPL_JVM_HEAD_ROOM" to "0",             // HEAD_ROOM 제거
-                "BP_JVM_THREAD_COUNT" to "100",         // 스레드 수 제한
+                "BPL_JVM_HEAD_ROOM" to "0", // HEAD_ROOM 제거
+                "BP_JVM_THREAD_COUNT" to "100", // 스레드 수 제한
                 "BPE_SPRING_PROFILES_ACTIVE" to "prod",
                 "BPE_JAVA_TOOL_OPTIONS" to
                     buildString {
-                        // Container JVM
                         append("-XX:+UseContainerSupport ")
-                        // Heap 메모리 설정 최대 1G
-//                        append("-Xmx256M ")
-                        // 스택 사이즈 줄이기
                         append("-Xss256k ")
                         append("-XX:ReservedCodeCacheSize=64M ")
                         append("-XX:MaxMetaspaceSize=64M ")
                         append("-XX:MaxDirectMemorySize=10M ")
-                        // OOM시 Heap Dump
                         append("-XX:+HeapDumpOnOutOfMemoryError ")
-                        // OOM시 Heap Dump 로그 생성 경로 (파일 이름 : 발생한 시각)
                         append("-XX:HeapDumpPath=/root/heapDump/%Y%m%d_%H%M%S.hprof ")
-                        // 중복 문자열 제거로 메모리 절약
                         append("-XX:+UseStringDeduplication ")
-                        // OOM시 애플리케이션 즉시 종료
                         append("-XX:+ExitOnOutOfMemoryError ")
-                        // Encoding
                         append("-Dfile.encoding=UTF-8 ")
                     }
             )

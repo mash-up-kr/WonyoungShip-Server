@@ -1,13 +1,9 @@
 name: CI/CD
 
-#on:
-#  release:
-#    types:
-#      - published
-
 on:
-  pull_request:
-    branches: [ develop ]
+  release:
+    types:
+      - published
 
 jobs:
   build-and-push:
@@ -35,10 +31,6 @@ jobs:
 
       - name: 이미지 빌드 및 푸쉬
         env:
-          #todo. 외부 secret manager
-#          SECRET_MANAGER_TOKEN: ${{ secrets.SECRET_MANAGER_TOKEN }}
-#          SECRET_MANAGER_WORKSPACE: ${{ secrets.SECRET_MANAGER_WORKSPACE }}
-#          DOCKER_HUB_REGISTRY: ${{ secrets.DOCKER_HUB_REGISTRY }}
           DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
         run: |
@@ -48,24 +40,8 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USERNAME }} #          password: ${{ secrets.SERVER_PASSWORD }}
+          username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_KEY }}
           script: |
             cd ~
-            
-            # deploy.sh 파일 다운로드
-            # wget https://raw.githubusercontent.com/mash-up-kr/WonyoungShip-Server/develop/script/deploy.sh -O deploy.sh
-            # https://github.com/mash-up-kr/WonyoungShip-Server.git
-            # chmod +x deploy.sh
-            
-            # 기존 .env 파일 삭제 및 새로 생성
-            # rm -f .env  # 기존 .env 파일을 삭제합니다.
-            
-            # .env 파일 새로 생성
-            # echo "DOCKER_HUB_USERNAME=${{ secrets.DOCKER_HUB_USERNAME }}" >> .env
-            # echo "DOCKER_HUB_PASSWORD=${{ secrets.DOCKER_HUB_PASSWORD }}" >> .env
-            # echo "SECRET_MANAGER_TOKEN=${{ secrets.SECRET_MANAGER_TOKEN }}" >> .env
-            # echo "SECRET_MANAGER_WORKSPACE_ID=${{ secrets.SECRET_MANAGER_WORKSPACE_ID }}" >> .env
-            
-            # 배포 스크립트 실행
             sudo ./deploy.sh

@@ -1,7 +1,6 @@
 #!/bin/bash
 source .env
 
-#REGISTRY_URL=${REGISTRY_URL}
 IMAGE_NAME="wonyoungship/doong2"
 TAG="latest"
 CONTAINER_NAME="doong2"
