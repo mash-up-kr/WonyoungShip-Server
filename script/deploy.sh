@@ -18,7 +18,7 @@ fi
 
 # 서버 실행
 echo "> Run Docker"
-docker run -d --memory=1g --name ${CONTAINER_NAME} \
+docker run -d -p 8080:8080 --memory=1g --name ${CONTAINER_NAME} \
   -e DOCKER_HUB_USERNAME=${DOCKER_HUB_USERNAME} \
   -e DOCKER_HUB_PASSWORD=${DOCKER_HUB_PASSWORD} \
   ${IMAGE_NAME}:${TAG}
