@@ -46,9 +46,12 @@ tasks {
                         // Container JVM
                         append("-XX:+UseContainerSupport ")
                         // Heap 메모리 설정 최대 1G
-                        append("-Xmx256M ")
+//                        append("-Xmx256M ")
                         // 스택 사이즈 줄이기
-                        append("-Xss512k ")
+                        append("-Xss256k ")
+                        append("-XX:ReservedCodeCacheSize=64M ")
+                        append("-XX:MaxMetaspaceSize=64M ")
+                        append("-XX:MaxDirectMemorySize=10M ")
                         // OOM시 Heap Dump
                         append("-XX:+HeapDumpOnOutOfMemoryError ")
                         // OOM시 Heap Dump 로그 생성 경로 (파일 이름 : 발생한 시각)
