@@ -38,14 +38,17 @@ tasks {
         environment.set(
             mapOf(
                 "BP_JVM_VERSION" to "21",
-                "BPL_JVM_HEAD_ROOM" to "0",
+                "BPL_JVM_HEAD_ROOM" to "0",             // HEAD_ROOM 제거
+                "BP_JVM_THREAD_COUNT" to "100",         // 스레드 수 제한
                 "BPE_SPRING_PROFILES_ACTIVE" to "prod",
                 "BPE_JAVA_TOOL_OPTIONS" to
                     buildString {
                         // Container JVM
                         append("-XX:+UseContainerSupport ")
-                        // Heap 메모리 설정 2G
-                        append("-Xms256M -Xmx256M ")
+                        // Heap 메모리 설정 최대 1G
+                        append("-Xmx256M ")
+                        // 스택 사이즈 줄이기
+                        append("-Xss512k ")
                         // OOM시 Heap Dump
                         append("-XX:+HeapDumpOnOutOfMemoryError ")
                         // OOM시 Heap Dump 로그 생성 경로 (파일 이름 : 발생한 시각)
