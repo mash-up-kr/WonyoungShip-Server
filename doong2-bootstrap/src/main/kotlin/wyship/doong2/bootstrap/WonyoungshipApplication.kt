@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class WonyoungshipApplication
 
 fun main(args: Array<String>) {
-	runApplication<WonyoungshipApplication>(*args)
+    runApplication<WonyoungshipApplication>(*args)
 }
