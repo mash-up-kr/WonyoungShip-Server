@@ -1,0 +1,14 @@
+vault:
+  hcp:
+    client-id: ${HCP_CLIENT_ID}
+    client-secret: ${HCP_CLIENT_SECRET}
+    org-id: ${HCP_ORG_ID}
+    project-id: ${HCP_PROJECT_ID}
+    app-id:
+      default: server-local
+      local: server-local
+      prod: server-prod
+      test: server-test
+
+test:
+  value: ${TEST_VALUE}
