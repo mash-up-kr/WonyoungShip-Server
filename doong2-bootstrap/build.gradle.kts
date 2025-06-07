@@ -11,10 +11,6 @@ dependencies {
     implementation(project(":doong2-persistence"))
     implementation(project(":doong2-core"))
     implementation(project(":doong2-common"))
-
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-actuator")
-    implementation("org.springframework.boot:spring-boot-autoconfigure")
 }
 
 tasks {
@@ -53,8 +49,8 @@ tasks {
                         append("-XX:+UseStringDeduplication ")
                         append("-XX:+ExitOnOutOfMemoryError ")
                         append("-Dfile.encoding=UTF-8 ")
-                    }
-            )
+                    },
+            ),
         )
 
         // Docker Registry 로그인 정보

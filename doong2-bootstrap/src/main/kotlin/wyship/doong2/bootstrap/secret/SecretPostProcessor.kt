@@ -6,8 +6,10 @@ import org.springframework.core.env.ConfigurableEnvironment
 import org.springframework.core.env.MapPropertySource
 
 class SecretPostProcessor : EnvironmentPostProcessor {
-
-    override fun postProcessEnvironment(env: ConfigurableEnvironment, application: SpringApplication?) {
+    override fun postProcessEnvironment(
+        env: ConfigurableEnvironment,
+        application: SpringApplication?,
+    ) {
         val loader = SecretLoaderFactory.create(env)
         val secrets = loader.load()
 
