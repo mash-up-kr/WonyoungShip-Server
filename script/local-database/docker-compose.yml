@@ -1,0 +1,18 @@
+services:
+    mysql:
+        image: mysql:8
+        container_name: mysql-doong2
+        environment:
+            MYSQL_ROOT_PASSWORD: 1234
+            MYSQL_DATABASE: doong2
+        ports:
+            - "3306:3306"
+        command:
+            - --character-set-server=utf8mb4
+            - --collation-server=utf8mb4_unicode_ci
+            - --default-time-zone=Asia/Seoul
+        volumes:
+            - mysql_data:/var/lib/mysql
+
+volumes:
+    mysql_data:

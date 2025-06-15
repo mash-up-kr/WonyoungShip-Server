@@ -1,4 +1,4 @@
-package wyship.doong2.core.member
+package wyship.doong2.core.member.port
 
 interface MemberSavePort {
     fun saveMember(command: SaveMemberCommand): SaveMemberResult

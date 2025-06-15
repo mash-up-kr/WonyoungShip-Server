@@ -6,11 +6,11 @@ import wyship.doong2.core.member.MemberSignUpUseCase
 
 @Component
 class MemberSignUpAcl(
-    private val memberSignUpUsecase: MemberSignUpUseCase,
+    private val memberSignUpUseCase: MemberSignUpUseCase,
 ) : MemberSignUpPort {
     override fun signUp(command: MemberSignUpPort.MemberSignUpCommand): MemberSignUpPort.MemberSignUpResult {
         val result =
-            memberSignUpUsecase.signUp(
+            memberSignUpUseCase.signUp(
                 MemberSignUpUseCase.MemberSignUpCommand(command.email, command.nickname, command.tokenId),
             )
 

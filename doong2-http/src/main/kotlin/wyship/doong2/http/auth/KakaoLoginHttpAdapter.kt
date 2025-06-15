@@ -3,7 +3,6 @@ package wyship.doong2.http.auth
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
-import wyship.doong2.core.auth.AuthenticateWithKakaoService
 import wyship.doong2.core.auth.AuthenticateWithKakaoUseCase
 import wyship.doong2.http.ApiResponse
 import wyship.doong2.http.HttpErrorType
@@ -12,7 +11,7 @@ import wyship.doong2.http.toApiResponse
 
 @RestController
 class KakaoLoginHttpAdapter(
-    private val authenticateWithKakaoUseCaseService: AuthenticateWithKakaoService,
+    private val authenticateWithKakaoUseCaseService: AuthenticateWithKakaoUseCase,
 ) {
     @PostMapping(LOGIN_URL)
     fun kakaoLogin(

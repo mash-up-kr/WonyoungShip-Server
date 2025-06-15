@@ -10,7 +10,7 @@ import wyship.doong2.persistence.base.BaseTimeEntity
 
 @Entity
 @Table(name = "members")
-data class Members(
+data class Member(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,

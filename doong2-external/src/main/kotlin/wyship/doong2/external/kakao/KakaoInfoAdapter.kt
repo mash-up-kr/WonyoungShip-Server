@@ -32,7 +32,7 @@ class KakaoInfoAdapter(
                 .header("Content-Type", "application/x-www-form-urlencoded;charset=utf-8")
                 .body(formData)
                 .retrieve()
-                .body(KakaoTokenResponse::class.java) ?: throw throw IllegalStateException()
+                .body(KakaoTokenResponse::class.java) ?: throw IllegalStateException()
 
         val userResponse =
             restClient
@@ -41,7 +41,7 @@ class KakaoInfoAdapter(
                 .header("Content-Type", "application/x-www-form-urlencoded;charset=utf-8")
                 .header("Authorization", "Bearer ${tokenResponse.accessToken}")
                 .retrieve()
-                .body(KakaoUserInfoResponse::class.java) ?: throw throw IllegalStateException()
+                .body(KakaoUserInfoResponse::class.java) ?: throw IllegalStateException()
 
         val email = userResponse.kakaoAccount.email ?: throw IllegalStateException("이메일 정보가 없습니다. 동의 항목을 확인하세요.")
         val nickname = userResponse.kakaoAccount.name ?: throw IllegalStateException("이름 정보가 없습니다. 동의 항목을 확인하세요.")
