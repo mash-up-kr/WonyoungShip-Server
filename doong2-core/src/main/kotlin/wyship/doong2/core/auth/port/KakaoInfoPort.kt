@@ -1,4 +1,4 @@
-package wyship.doong2.core.auth
+package wyship.doong2.core.auth.port
 
 interface KakaoInfoPort {
     fun getKakaoInfo(query: GetKakaoInfoQuery): GetKakaoInfoResult
@@ -9,6 +9,6 @@ interface KakaoInfoPort {
 
     data class GetKakaoInfoResult(
         val email: String,
-        val name: String,
+        val nickname: String,
     )
 }

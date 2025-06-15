@@ -2,29 +2,27 @@ package wyship.doong2.http.auth
 
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import wyship.doong2.core.auth.KakaoLoginUsecase
-import wyship.doong2.core.auth.KakaoLoginUsecase.KakaoLoginCommand
+import wyship.doong2.core.auth.AuthenticateWithKakaoService
+import wyship.doong2.core.auth.AuthenticateWithKakaoUseCase
 import wyship.doong2.http.ApiResponse
 import wyship.doong2.http.HttpErrorType
 import wyship.doong2.http.LOGIN_URL
 import wyship.doong2.http.toApiResponse
 
 @RestController
-@RequestMapping
 class KakaoLoginHttpAdapter(
-    private val kakaoLoginUsecase: KakaoLoginUsecase,
+    private val authenticateWithKakaoUseCaseService: AuthenticateWithKakaoService,
 ) {
     @PostMapping(LOGIN_URL)
     fun kakaoLogin(
         @RequestBody request: KakaoLoginRequest,
     ): ApiResponse<KakaoLoginResponse> =
-        kakaoLoginUsecase
+        authenticateWithKakaoUseCaseService
             .login(request.toCommand())
             .toApiResponse(
                 {
-                    KakaoLoginResponse(it.accessToken, it.refreshToken)
+                    KakaoLoginResponse(it.accessToken)
                 },
                 { errorType ->
                     when (errorType) {
@@ -36,11 +34,11 @@ class KakaoLoginHttpAdapter(
     data class KakaoLoginRequest(
         val token: String,
     ) {
-        fun toCommand(): KakaoLoginCommand = KakaoLoginCommand(token)
+        fun toCommand(): AuthenticateWithKakaoUseCase.KakaoLoginCommand =
+            AuthenticateWithKakaoUseCase.KakaoLoginCommand(token)
     }
 
     data class KakaoLoginResponse(
         val accessToken: String,
-        val refreshToken: String,
     )
 }

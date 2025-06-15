@@ -1,6 +1,6 @@
 package wyship.doong2.core.member
 
-interface MemberQueryUsecase {
+interface MemberQueryUseCase {
     fun getByEmail(email: String): MemberResult
 
     data class MemberResult(

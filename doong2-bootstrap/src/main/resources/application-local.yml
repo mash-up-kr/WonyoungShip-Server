@@ -1,3 +1,9 @@
+spring:
+  config:
+    import:
+      - classpath:persistence-config/application-local.yml
+      - classpath:core-config/application-local.yml
+      - classpath:external-config/application-local.yml
 vault:
   hcp:
     client-id: ${HCP_CLIENT_ID}

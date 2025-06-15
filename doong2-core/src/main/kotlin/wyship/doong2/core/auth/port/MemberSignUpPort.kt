@@ -1,6 +1,6 @@
-package wyship.doong2.core.member
+package wyship.doong2.core.auth.port
 
-interface MemberSignUpUseCase {
+interface MemberSignUpPort {
     fun signUp(command: MemberSignUpCommand): MemberSignUpResult
 
     data class MemberSignUpCommand(
@@ -10,6 +10,6 @@ interface MemberSignUpUseCase {
     )
 
     data class MemberSignUpResult(
-        val memberId: Long,
+        val id: Long,
     )
 }

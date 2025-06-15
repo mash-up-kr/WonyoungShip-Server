@@ -1,13 +1,13 @@
-package wyship.doong2.core.auth
+package wyship.doong2.core.auth.port
 
 interface MemberExistPort {
-    fun exist(query: MemberExistQuery): MemberExitResult
+    fun exist(query: MemberExistQuery): MemberExistResult
 
     data class MemberExistQuery(
         val email: String,
     )
 
-    data class MemberExitResult(
+    data class MemberExistResult(
         val isExist: Boolean,
     )
 }

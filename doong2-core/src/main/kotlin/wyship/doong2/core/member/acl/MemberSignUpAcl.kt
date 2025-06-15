@@ -1,18 +1,19 @@
 package wyship.doong2.core.member.acl
 
 import org.springframework.stereotype.Component
-import wyship.doong2.core.auth.MemberSignUpPort
-import wyship.doong2.core.member.MemberSignUpUsecase
+import wyship.doong2.core.auth.port.MemberSignUpPort
+import wyship.doong2.core.member.MemberSignUpUseCase
 
 @Component
 class MemberSignUpAcl(
-    private val memberSignUpUsecase: MemberSignUpUsecase,
+    private val memberSignUpUsecase: MemberSignUpUseCase,
 ) : MemberSignUpPort {
-    override fun signUp(
-        email: String,
-        name: String,
-    ): MemberSignUpPort.MemberId {
-        val result = memberSignUpUsecase.signUp(MemberSignUpUsecase.MemberSignUpCommand(email, name))
-        return MemberSignUpPort.MemberId(result.memberId)
+    override fun signUp(command: MemberSignUpPort.MemberSignUpCommand): MemberSignUpPort.MemberSignUpResult {
+        val result =
+            memberSignUpUsecase.signUp(
+                MemberSignUpUseCase.MemberSignUpCommand(command.email, command.nickname, command.tokenId),
+            )
+
+        return MemberSignUpPort.MemberSignUpResult(result.memberId)
     }
 }

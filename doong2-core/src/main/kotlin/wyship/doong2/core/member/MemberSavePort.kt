@@ -5,7 +5,7 @@ interface MemberSavePort {
 
     data class SaveMemberCommand(
         val email: String,
-        val name: String,
+        val nickname: String,
         val tokenId: String,
     )
 
