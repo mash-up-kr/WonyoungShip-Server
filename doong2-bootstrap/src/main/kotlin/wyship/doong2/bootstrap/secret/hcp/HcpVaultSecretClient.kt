@@ -8,7 +8,7 @@ import org.springframework.web.client.RestClient
 
 class HcpVaultSecretClient(
     private val clientId: String,
-    private val clientSecret: String
+    private val clientSecret: String,
 ) {
     private val restClient = RestClient.create()
 
@@ -63,20 +63,20 @@ class HcpVaultSecretClient(
 
 data class TokenResponse(
     @JsonProperty("access_token")
-    val accessToken: String
+    val accessToken: String,
 )
 
 data class HcpVaultOpenResponse(
-    val secrets: List<OpenSecret>
+    val secrets: List<OpenSecret>,
 )
 
 data class OpenSecret(
     val name: String,
     @JsonProperty("static_version")
-    val staticVersion: StaticVersion?
+    val staticVersion: StaticVersion?,
 )
 
 data class StaticVersion(
     val version: Int,
-    val value: String
+    val value: String,
 )

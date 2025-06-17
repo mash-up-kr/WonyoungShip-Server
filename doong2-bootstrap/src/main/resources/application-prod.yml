@@ -1,0 +1,17 @@
+spring:
+  config:
+    import:
+      - classpath:persistence-config/application-prod.yml
+      - classpath:core-config/application-prod.yml
+      - classpath:external-config/application-prod.yml
+vault:
+  hcp:
+    client-id: ${HCP_CLIENT_ID}
+    client-secret: ${HCP_CLIENT_SECRET}
+    org-id: ${HCP_ORG_ID}
+    project-id: ${HCP_PROJECT_ID}
+    app-id:
+      default: server-local
+      local: server-local
+      prod: server-prod
+      test: server-test
