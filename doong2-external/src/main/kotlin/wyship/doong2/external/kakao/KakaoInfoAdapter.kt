@@ -58,7 +58,8 @@ class KakaoInfoAdapter(
                     .retrieve()
                     .onStatus(HttpStatusCode::is4xxClientError) { _, response ->
                         log.info(
-                            "Kakao Info Client exception. statusCode: ${response.statusCode}, code : ${tokenResponse.accessToken}",
+                            "Kakao Info Client exception. statusCode: ${response.statusCode}," +
+                                " code : ${tokenResponse.accessToken}",
                         )
                         throw KakaoLoginApiClientException()
                     }.onStatus(HttpStatusCode::is5xxServerError) { _, response ->
