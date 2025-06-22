@@ -8,12 +8,14 @@ import wyship.doong2.core.member.MemberSignUpUseCase
 class MemberSignUpAcl(
     private val memberSignUpUseCase: MemberSignUpUseCase,
 ) : MemberSignUpPort {
-    override fun signUp(command: MemberSignUpPort.MemberSignUpCommand): MemberSignUpPort.MemberSignUpResult {
-        val result =
-            memberSignUpUseCase.signUp(
+    override fun signUp(command: MemberSignUpPort.MemberSignUpCommand): Result<MemberSignUpPort.MemberSignUpResult> =
+        memberSignUpUseCase
+            .signUp(
                 MemberSignUpUseCase.MemberSignUpCommand(command.email, command.nickname, command.tokenId),
+            ).fold(
+                onSuccess = { result -> Result.success(MemberSignUpPort.MemberSignUpResult(result.memberId)) },
+                onFailure = { _ -> Result.failure(MemberSignUpFailException()) },
             )
 
-        return MemberSignUpPort.MemberSignUpResult(result.memberId)
-    }
+    override fun isAlreadySignUp(email: String): Boolean = memberSignUpUseCase.isSignUpAvailable(email = email)
 }
