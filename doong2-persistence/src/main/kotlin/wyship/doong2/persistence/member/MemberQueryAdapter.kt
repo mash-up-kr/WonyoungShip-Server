@@ -10,7 +10,7 @@ class MemberQueryAdapter(
 ) : MemberQueryPort {
     @Transactional
     override fun findMemberOrNull(email: String): MemberQueryPort.Member? {
-        val member = memberRepository.findByEmailOrNull(email) ?: return null
+        val member = memberRepository.findByEmail(email) ?: return null
         return MemberQueryPort.Member(member.id!!, member.nickname, member.email, member.tokenId)
     }
 }
