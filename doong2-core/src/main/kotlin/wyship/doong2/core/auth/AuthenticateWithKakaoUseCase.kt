@@ -1,7 +1,13 @@
 package wyship.doong2.core.auth
 
 import org.springframework.stereotype.Service
-import wyship.doong2.core.auth.AuthenticateWithKakaoUseCase.*
+import wyship.doong2.core.auth.AuthenticateWithKakaoUseCase.KakaoLoginCommand
+import wyship.doong2.core.auth.AuthenticateWithKakaoUseCase.KakaoLoginEmailFailException
+import wyship.doong2.core.auth.AuthenticateWithKakaoUseCase.KakaoLoginFailException
+import wyship.doong2.core.auth.AuthenticateWithKakaoUseCase.KakaoLoginResult
+import wyship.doong2.core.auth.AuthenticateWithKakaoUseCase.KakaoLoginTokenFailException
+import wyship.doong2.core.auth.AuthenticateWithKakaoUseCase.KakaoUseCaseLoginNameFailException
+import wyship.doong2.core.auth.AuthenticateWithKakaoUseCase.MemberSignUpFailException
 import wyship.doong2.core.auth.domain.JwtProvider
 import wyship.doong2.core.auth.domain.MemberTokenIdGenerator
 import wyship.doong2.core.auth.port.KakaoInfoPort
@@ -72,7 +78,7 @@ internal class AuthenticateWithKakaoService(
                     ).getOrElse { throw MemberSignUpFailException() }
             }
 
-            val tokenId = memberTokenIdPort.getTokenId(email)
+            val tokenId = memberTokenIdPort.getTokenId(email).getOrElse { throw MemberSignUpFailException() }
             val token = jwtProvider.createToken(tokenId)
 
             return@runCatching KakaoLoginResult(token)
