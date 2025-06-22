@@ -2,6 +2,7 @@ package wyship.doong2.core.member.acl
 
 import org.springframework.stereotype.Component
 import wyship.doong2.core.auth.port.MemberSignUpPort
+import wyship.doong2.core.auth.port.MemberSignUpPort.MemberSignUpFailException
 import wyship.doong2.core.member.MemberSignUpUseCase
 
 @Component
