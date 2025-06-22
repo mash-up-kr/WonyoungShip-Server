@@ -1,6 +1,5 @@
 package wyship.doong2.core.member
 
-import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import wyship.doong2.core.exception.CommonException
@@ -58,9 +57,5 @@ internal class MemberSignUpService(
     override fun isSignUpAvailable(email: String): Boolean {
         val existMember = memberQueryPort.findMemberOrNull(email)
         return existMember == null
-    }
-
-    companion object {
-        private val log = LoggerFactory.getLogger(MemberSignUpService::class.java)
     }
 }
