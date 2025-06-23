@@ -5,7 +5,7 @@ import wyship.doong2.core.exception.CommonException
 interface MemberSignUpPort {
     fun signUp(command: MemberSignUpCommand): Result<MemberSignUpResult>
 
-    fun isAlreadySignUp(email: String): Boolean
+    fun isSignUpAvailable(email: String): Boolean
 
     data class MemberSignUpCommand(
         val email: String,

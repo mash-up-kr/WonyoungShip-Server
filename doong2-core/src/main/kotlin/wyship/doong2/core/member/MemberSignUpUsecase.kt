@@ -55,7 +55,7 @@ internal class MemberSignUpService(
     }
 
     override fun isSignUpAvailable(email: String): Boolean {
-        val existMember = memberQueryPort.findMemberOrNull(email)
+        val existMember = memberQueryPort.findMemberByEmailOrNull(email)
         return existMember == null
     }
 }
