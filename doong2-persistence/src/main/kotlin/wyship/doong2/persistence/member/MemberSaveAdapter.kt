@@ -18,7 +18,12 @@ class MemberSaveAdapter(
                 memberRepository.save(
                     Member(email = command.email, nickname = command.nickname, tokenId = command.tokenId),
                 )
-            SaveMemberResult(member.id!!)
+            SaveMemberResult(
+                member.id
+                    ?: throw IllegalStateException(
+                        "[MemberSaveAdapter][saveMember] member id is null. check orm or transaction",
+                    ),
+            )
         }.onFailure { exception ->
             log.warn("[MemberSaveAdapter][saveMember] save ${command.email} member fail exception: $exception")
         }.fold(
