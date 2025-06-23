@@ -18,5 +18,5 @@ class MemberSignUpAcl(
                 onFailure = { _ -> Result.failure(MemberSignUpFailException()) },
             )
 
-    override fun isAlreadySignUp(email: String): Boolean = memberSignUpUseCase.isSignUpAvailable(email = email)
+    override fun isSignUpAvailable(email: String): Boolean = memberSignUpUseCase.isSignUpAvailable(email = email)
 }

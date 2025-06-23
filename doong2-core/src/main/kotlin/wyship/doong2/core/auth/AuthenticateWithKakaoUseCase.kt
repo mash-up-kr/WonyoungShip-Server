@@ -67,7 +67,7 @@ internal class AuthenticateWithKakaoService(
                         }
                     }
 
-            if (memberSignUpPort.isAlreadySignUp(email)) {
+            if (memberSignUpPort.isSignUpAvailable(email)) {
                 memberSignUpPort
                     .signUp(
                         MemberSignUpPort.MemberSignUpCommand(
