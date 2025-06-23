@@ -1,7 +1,7 @@
 package wyship.doong2.core.member.port
 
 interface MemberQueryPort {
-    fun findMember(email: String): Member?
+    fun findMemberOrNull(email: String): Member?
 
     data class Member(
         val id: Long,
