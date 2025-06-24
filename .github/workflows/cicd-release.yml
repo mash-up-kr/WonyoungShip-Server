@@ -34,7 +34,10 @@ jobs:
           DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
         run: |
-          ./gradlew :doong2-bootstrap:bootBuildImage
+            docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
+            ./gradlew :doong2-bootstrap:bootJar
+            docker build -t wonyoungship/doong2:latest -f doong2-bootstrap/Dockerfile .
+            docker push wonyoungship/doong2:latest
 
       - name: 서버 재시작 스크립트 실행
         uses: appleboy/ssh-action@master
