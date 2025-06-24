@@ -4,6 +4,11 @@ spring:
       - classpath:persistence-config/application-prod.yml
       - classpath:core-config/application-prod.yml
       - classpath:external-config/application-prod.yml
+      - classpath:http-config/application-prod.yml
+server:
+  error:
+    whitelabel:
+      enabled: false
 vault:
   hcp:
     client-id: ${HCP_CLIENT_ID}

@@ -14,12 +14,16 @@ import wyship.doong2.core.auth.AuthenticateWithKakaoUseCase.MemberSignUpFailExce
 import wyship.doong2.http.ApiResponse
 import wyship.doong2.http.HttpErrorType
 import wyship.doong2.http.LOGIN_URL
+import wyship.doong2.http.auth.doc.KakaoLoginHttpAdapterSwagger
+import wyship.doong2.http.auth.doc.KakaoLoginSwagger
 import wyship.doong2.http.toApiResponse
 
+@KakaoLoginHttpAdapterSwagger
 @RestController
 class KakaoLoginHttpAdapter(
     private val authenticateWithKakaoUseCaseService: AuthenticateWithKakaoUseCase,
 ) {
+    @KakaoLoginSwagger
     @PostMapping(LOGIN_URL)
     fun kakaoLogin(
         @RequestBody request: KakaoLoginRequest,
