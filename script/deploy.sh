@@ -17,9 +17,16 @@ fi
 
 # 서버 실행
 echo "> Run Docker"
-docker run -d -p 8080:8080 --memory=1g --name ${CONTAINER_NAME} \
-  -e DOCKER_HUB_USERNAME=${DOCKER_HUB_USERNAME} \
-  -e DOCKER_HUB_PASSWORD=${DOCKER_HUB_PASSWORD} \
+docker run -d \
+  --name ${CONTAINER_NAME} \
+  -p 8080:8080 \
+  -e SPRING_PROFILES_ACTIVE=prod \
+  -e HCP_CLIENT_ID=${HCP_CLIENT_ID} \
+  -e HCP_CLIENT_SECRET=${HCP_CLIENT_SECRET} \
+  -e HCP_ORG_ID=${HCP_ORG_ID} \
+  -e HCP_PROJECT_ID=${HCP_PROJECT_ID} \
+  -e BPL_JVM_MEMORY_CALCULATOR_DISABLED=true \
+  -e JAVA_TOOL_OPTIONS="-XX:MaxMetaspaceSize=256M -Xmx256M -Xss256k" \
   ${IMAGE_NAME}:${TAG}
 
 echo "----------------------------------------------------------------------"
