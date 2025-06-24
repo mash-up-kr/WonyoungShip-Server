@@ -4,10 +4,14 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 import wyship.doong2.http.ApiResponse
 import wyship.doong2.http.LANDING_CONTENT_URL
+import wyship.doong2.http.home.doc.LandingContentHttpAdapterSwagger
+import wyship.doong2.http.home.doc.LandingContentSwagger
 import kotlin.random.Random
 
+@LandingContentHttpAdapterSwagger
 @RestController
-class LandingContentController {
+class LandingContentHttpAdapter {
+    @LandingContentSwagger
     @GetMapping(LANDING_CONTENT_URL)
     fun getLandingContent(): ApiResponse<List<String>> {
         val randomLetters = letters.shuffled(Random(System.currentTimeMillis())).take(10)

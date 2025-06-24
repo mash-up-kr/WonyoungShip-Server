@@ -12,7 +12,7 @@ internal class MemberExistQueryService(
     private val memberQueryPort: MemberQueryPort,
 ) : MemberExistQueryUseCase {
     override fun exist(email: String): Boolean {
-        val findMember = memberQueryPort.findMemberOrNull(email)
+        val findMember = memberQueryPort.findMemberByEmailOrNull(email)
         return findMember != null
     }
 }
