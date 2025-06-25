@@ -14,5 +14,8 @@ enum class HttpErrorType(
     // sign up fail
     INVALID_SIGN_UP_STATUS("4201", "invalid sign up status"),
 
+    // letter write fail
+    INVALID_WRITE_LETTER("4301", "invalid content"),
+
     INTERNAL_ERROR("5000", "internal error"),
 }
