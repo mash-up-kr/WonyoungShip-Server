@@ -45,14 +45,14 @@ internal class WriteLetterService(
                 musicId = command.musicId,
                 senderNickname = command.senderNickname,
                 fortuneCookieId = command.fortuneCookieId,
-            )
+            ),
         ).getOrElse { throw it }
 
         return Result
             .success(WriteLetterUseCase.WriteLetterResult(letterId = result.letterId))
             .fold(
                 onSuccess = { Result.success(it) },
-                onFailure = { Result.failure(WriteLetterUseCase.LetterWriteFailException()) }
+                onFailure = { Result.failure(WriteLetterUseCase.LetterWriteFailException()) },
             )
     }
 }
