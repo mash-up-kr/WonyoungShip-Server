@@ -34,8 +34,8 @@ internal class WriteLetterService(
     private val letterSavePort: LetterSavePort,
 ) : WriteLetterUseCase {
 
-    override fun write(command: WriteLetterUseCase.WriteLetterCommand): Result<WriteLetterUseCase.WriteLetterResult> =
-        letterSavePort.saveLetter(
+    override fun write(command: WriteLetterUseCase.WriteLetterCommand): Result<WriteLetterUseCase.WriteLetterResult> {
+        val result = letterSavePort.saveLetter(
             LetterSavePort.SaveLetterCommand(
                 senderId = command.senderId,
                 receiverId = command.receiverId,
@@ -45,10 +45,14 @@ internal class WriteLetterService(
                 musicId = command.musicId,
                 senderNickname = command.senderNickname,
                 fortuneCookieId = command.fortuneCookieId,
-            ),
-        ).mapCatching {
-            WriteLetterUseCase.WriteLetterResult(letterId = it.letterId)
-        }.onFailure {
-            throw WriteLetterUseCase.LetterWriteFailException()
-        }
+            )
+        ).getOrElse { throw it }
+
+        return Result
+            .success(WriteLetterUseCase.WriteLetterResult(letterId = result.letterId))
+            .fold(
+                onSuccess = { Result.success(it) },
+                onFailure = { Result.failure(WriteLetterUseCase.LetterWriteFailException()) }
+            )
+    }
 }
