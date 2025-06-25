@@ -2,7 +2,6 @@ package wyship.doong2.persistence.letter
 
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
-import org.springframework.transaction.annotation.Transactional
 import wyship.doong2.core.letter.port.LetterSavePort
 import wyship.doong2.core.letter.port.LetterSavePort.SaveLetterCommand
 import wyship.doong2.core.letter.port.LetterSavePort.SaveLetterResult
@@ -12,7 +11,6 @@ class LetterSaveAdapter(
     private val letterRepository: LetterRepository,
 ) : LetterSavePort {
 
-    @Transactional
     override fun saveLetter(command: SaveLetterCommand): Result<SaveLetterResult> =
         runCatching {
             val letter = letterRepository.save(
@@ -21,15 +19,15 @@ class LetterSaveAdapter(
                     receiverMemberId = command.receiverId,
                     messageContent = command.content,
                     scheduleDate = command.scheduleDate,
-                    decorationId = command.decorationId,
+                    weather = command.weather,
+                    musicId = command.musicId,
+                    senderNickname = command.senderNickname,
+                    fortuneCookieId = command.fortuneCookieId,
                 ),
             )
-
-            SaveLetterResult(
-                letter.id ?: throw IllegalStateException("[LetterSaveAdapter][saveLetter] letter id is null"),
-            )
+            SaveLetterResult(letter.id ?: error("letter id is null"))
         }.onFailure {
-            log.warn("[LetterSaveAdapter][saveLetter] Failed to save letter: $it")
+            log.warn("[LetterSaveAdapter][saveLetter] failed to save letter: $it")
         }.fold(
             onSuccess = { Result.success(it) },
             onFailure = { Result.failure(LetterSavePort.LetterSaveFailException()) },

@@ -16,7 +16,7 @@ annotation class LetterWriteHttpAdapterSwagger
 @Retention(AnnotationRetention.RUNTIME)
 @Operation(
     summary = "편지 작성 API",
-    description = "보내는 사람, 받는 사람, 메시지, 예약 날짜, 꾸밈 요소를 포함해 편지를 작성합니다.",
+    description = "보내는 사람, 받는 사람, 메시지, 예약 날짜, 날씨, 음악, 닉네임, 포춘쿠키 정보를 포함해 편지를 작성합니다.",
 )
 @ApiResponses(
     value = [
@@ -29,7 +29,7 @@ annotation class LetterWriteHttpAdapterSwagger
                     schema = Schema(implementation = CommonApiResponse::class),
                     examples = [
                         ExampleObject(
-                            name = "편지 작성 성공",
+                            name = "성공 응답",
                             value = """
                                 {
                                   "code": "0000",
@@ -39,6 +39,21 @@ annotation class LetterWriteHttpAdapterSwagger
                                   },
                                   "pageIndex": null,
                                   "pageSize": null
+                                }
+                            """,
+                        ),
+                        ExampleObject(
+                            name = "요청 예시",
+                            value = """
+                                {
+                                  "senderId": 1,
+                                  "receiverId": 2,
+                                  "content": "행복한 하루 보내!",
+                                  "scheduleDate": "2025-07-01",
+                                  "weather": "SUNNY",
+                                  "musicId": 10,
+                                  "senderNickname": "도운이",
+                                  "fortuneCookieId": 3
                                 }
                             """,
                         ),

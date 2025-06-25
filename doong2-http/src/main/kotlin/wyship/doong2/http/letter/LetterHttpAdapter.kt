@@ -7,6 +7,7 @@ import wyship.doong2.core.letter.WriteLetterUseCase
 import wyship.doong2.core.letter.WriteLetterUseCase.LetterWriteFailException
 import wyship.doong2.core.letter.WriteLetterUseCase.WriteLetterCommand
 import wyship.doong2.core.letter.WriteLetterUseCase.WriteLetterUseCaseException
+import wyship.doong2.core.letter.domain.WeatherType
 import wyship.doong2.http.ApiResponse
 import wyship.doong2.http.HttpErrorType
 import wyship.doong2.http.LETTER_WRITE_URL
@@ -42,18 +43,24 @@ class LetterWriteHttpAdapter(
             )
 
     data class LetterWriteRequest(
-        val senderId: Long,
+        val senderId: Long?,
         val receiverId: Long,
         val content: String,
         val scheduleDate: LocalDate,
-        val decorationId: Long,
+        val weather: WeatherType,
+        val musicId: Long?,
+        val senderNickname: String,
+        val fortuneCookieId: Long?,
     ) {
         fun toCommand(): WriteLetterCommand = WriteLetterCommand(
             senderId = senderId,
             receiverId = receiverId,
             content = content,
             scheduleDate = scheduleDate,
-            decorationId = decorationId,
+            weather = weather,
+            musicId = musicId,
+            senderNickname = senderNickname,
+            fortuneCookieId = fortuneCookieId,
         )
     }
 
