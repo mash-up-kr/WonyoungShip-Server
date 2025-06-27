@@ -1,5 +1,6 @@
 package wyship.doong2.http.letter
 
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -11,19 +12,19 @@ import wyship.doong2.http.ApiResponse
 import wyship.doong2.http.HttpErrorType
 import wyship.doong2.http.LETTERS_READ_URL
 import wyship.doong2.http.config.LoginMember
+import wyship.doong2.http.letter.doc.LetterReadHttpAdapterSwagger
 import wyship.doong2.http.letter.doc.LetterReadSwagger
-import wyship.doong2.http.letter.doc.LetterWriteHttpAdapterSwagger
 import wyship.doong2.http.toApiResponse
 import java.time.LocalDate
 
-@LetterWriteHttpAdapterSwagger
+@LetterReadHttpAdapterSwagger
 @RestController
 class LetterReadHttpAdapter(
     private val readLetterUseCase: ReadLetterUseCase,
 ) {
 
     @LetterReadSwagger
-    @PostMapping(LETTERS_READ_URL)
+    @GetMapping(LETTERS_READ_URL)
     fun readLetters(
         @LoginMember memberId: Long,
         @RequestParam year: Int,
@@ -64,26 +65,26 @@ class LetterReadHttpAdapter(
                 }
             },
         )
+
+    data class LettersReadResponse(
+        val year: Int,
+        val month: Int,
+        val letters: List<LetterReadResponse>,
+    )
+
+    data class LetterReadResponse(
+        val senderNickName: String,
+        val createdDate: LocalDate,
+        val scheduleDate: LocalDate,
+        val weatherType: WeatherType,
+        val content: String,
+        val music: LetterMusicReadResponse?,
+        val fortuneCookieId: Long?,
+    )
+
+    data class LetterMusicReadResponse(
+        val title: String,
+        val artist: String,
+        val url: String,
+    )
 }
-
-data class LettersReadResponse(
-    val year: Int,
-    val month: Int,
-    val letters: List<LetterReadResponse>,
-)
-
-data class LetterReadResponse(
-    val senderNickName: String,
-    val createdDate: LocalDate,
-    val scheduleDate: LocalDate,
-    val weatherType: WeatherType,
-    val content: String,
-    val music: LetterMusicReadResponse?,
-    val fortuneCookieId: Long?,
-)
-
-data class LetterMusicReadResponse(
-    val title: String,
-    val artist: String,
-    val url: String,
-)
