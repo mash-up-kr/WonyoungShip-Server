@@ -99,12 +99,19 @@ annotation class LetterReadHttpAdapterSwagger
                                         "createdDate": "2025-06-26",
                                         "scheduleDate": "2025-06-27",
                                         "weatherType": "SUNNY",
-                                        "content": "편지 테스트 아룰룰루",
-                                        "music": null,
-                                        "fortuneCookieId": null
+                                        "content": "편지 테스트",
+                                        "music": {
+                                          "title": "Dirty Work",
+                                          "artist": "aespa",
+                                          "url": "https://www.test.com"
+                                        },
+                                        "fortuneCookieId": 1
                                       }
                                     ]
                                   },
+                                  "pageIndex": null,
+                                  "pageSize": null
+                                }
                             """,
                         ),
                     ],
