@@ -12,7 +12,7 @@ interface ReadLetterUseCase {
     fun readByScheduleDate(command: ReadLettersCommand): Result<ReadLettersResult>
 
     data class ReadLettersCommand(
-        val memberId: Long, // todo. access token 연동 후 리팩토링
+        val memberId: Long,
         val year: Int,
         val month: Int,
     )

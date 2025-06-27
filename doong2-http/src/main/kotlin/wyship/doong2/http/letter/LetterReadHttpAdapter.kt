@@ -1,7 +1,6 @@
 package wyship.doong2.http.letter
 
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import wyship.doong2.core.letter.ReadLetterUseCase
@@ -10,7 +9,7 @@ import wyship.doong2.core.letter.WriteLetterUseCase.WriteLetterUseCaseException
 import wyship.doong2.core.letter.domain.WeatherType
 import wyship.doong2.http.ApiResponse
 import wyship.doong2.http.HttpErrorType
-import wyship.doong2.http.LETTERS_READ_URL
+import wyship.doong2.http.LETTER_URL
 import wyship.doong2.http.config.LoginMember
 import wyship.doong2.http.letter.doc.LetterReadHttpAdapterSwagger
 import wyship.doong2.http.letter.doc.LetterReadSwagger
@@ -24,7 +23,7 @@ class LetterReadHttpAdapter(
 ) {
 
     @LetterReadSwagger
-    @GetMapping(LETTERS_READ_URL)
+    @GetMapping(LETTER_URL)
     fun readLetters(
         @LoginMember memberId: Long,
         @RequestParam year: Int,
