@@ -14,12 +14,12 @@ class LetterQueryAdapter(
         memberId: Long,
         startDate: LocalDate,
         endDate: LocalDate,
-    ): Result<List<LetterQueryPort.ReadLetterResult>> =
+    ): Result<List<LetterQueryPort.Letter>> =
         runCatching {
             letterRepository.findAllByReceiverMemberIdAndScheduleDateBetween(memberId, startDate, endDate)
                 .filter { it.id != null }
                 .map {
-                    LetterQueryPort.ReadLetterResult(
+                    LetterQueryPort.Letter(
                         id = it.id!!,
                         senderId = it.senderMemberId,
                         senderNickname = it.senderNickname,

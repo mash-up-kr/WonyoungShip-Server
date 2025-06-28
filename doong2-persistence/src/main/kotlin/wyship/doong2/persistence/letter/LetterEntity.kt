@@ -14,7 +14,7 @@ import java.time.LocalDate
 
 @Entity
 @Table(name = "letters")
-data class Letter(
+data class LetterEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
@@ -43,4 +43,10 @@ data class Letter(
 
     @Column(nullable = true)
     val fortuneCookieId: Long? = null,
+
+    @Column(nullable = false)
+    val viewed: Boolean = false,
+
+    @Column(nullable = false)
+    val marked: Boolean = false,
 ) : BaseTimeEntity()

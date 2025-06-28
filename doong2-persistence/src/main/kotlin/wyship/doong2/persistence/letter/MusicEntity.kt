@@ -9,7 +9,7 @@ import jakarta.persistence.Table
 
 @Entity
 @Table(name = "music")
-data class Music(
+data class MusicEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,

@@ -3,23 +3,23 @@ package wyship.doong2.http.letter
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
-import wyship.doong2.core.letter.WriteLetterUseCase
-import wyship.doong2.core.letter.WriteLetterUseCase.LetterWriteFailException
-import wyship.doong2.core.letter.WriteLetterUseCase.WriteLetterCommand
-import wyship.doong2.core.letter.WriteLetterUseCase.WriteLetterUseCaseException
+import wyship.doong2.core.letter.LetterWriteUseCase
+import wyship.doong2.core.letter.LetterWriteUseCase.LetterWriteFailException
+import wyship.doong2.core.letter.LetterWriteUseCase.WriteLetterCommand
+import wyship.doong2.core.letter.LetterWriteUseCase.WriteLetterUseCaseException
 import wyship.doong2.core.letter.domain.WeatherType
 import wyship.doong2.http.ApiResponse
 import wyship.doong2.http.HttpErrorType
 import wyship.doong2.http.LETTER_URL
-import wyship.doong2.http.letter.doc.LetterWriteHttpAdapterSwagger
+import wyship.doong2.http.letter.doc.LetterWriteApiSwagger
 import wyship.doong2.http.letter.doc.LetterWriteSwagger
 import wyship.doong2.http.toApiResponse
 import java.time.LocalDate
 
-@LetterWriteHttpAdapterSwagger
+@LetterWriteApiSwagger
 @RestController
-class LetterWriteHttpAdapter(
-    private val writeLetterUseCase: WriteLetterUseCase,
+class LetterWriteApi(
+    private val letterWriteUseCase: LetterWriteUseCase,
 ) {
 
     @LetterWriteSwagger
@@ -27,7 +27,7 @@ class LetterWriteHttpAdapter(
     fun writeLetter(
         @RequestBody request: LetterWriteRequest,
     ): ApiResponse<LetterWriteResponse> =
-        writeLetterUseCase
+        letterWriteUseCase
             .write(request.toCommand())
             .toApiResponse(
                 onSuccess = { LetterWriteResponse(it.letterId) },

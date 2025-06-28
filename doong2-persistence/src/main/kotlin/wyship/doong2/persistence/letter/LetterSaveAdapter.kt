@@ -13,8 +13,8 @@ class LetterSaveAdapter(
 
     override fun saveLetter(command: SaveLetterCommand): Result<SaveLetterResult> =
         runCatching {
-            val letter = letterRepository.save(
-                Letter(
+            val letterEntity = letterRepository.save(
+                LetterEntity(
                     senderMemberId = command.senderId,
                     receiverMemberId = command.receiverId,
                     messageContent = command.content,
@@ -25,7 +25,7 @@ class LetterSaveAdapter(
                     fortuneCookieId = command.fortuneCookieId,
                 ),
             )
-            SaveLetterResult(letter.id ?: error("letter id is null"))
+            SaveLetterResult(letterEntity.id ?: error("letter id is null"))
         }.onFailure {
             log.warn("[LetterSaveAdapter][saveLetter] failed to save letter: $it")
         }.fold(
