@@ -11,12 +11,12 @@ class LetterQueryAdapter(
 ) : LetterQueryPort {
 
     override fun findByReceiverIdAndScheduleDate(
-        memberId: Long,
+        receiverId: Long,
         startDate: LocalDate,
         endDate: LocalDate,
     ): Result<List<LetterQueryPort.Letter>> =
         runCatching {
-            letterRepository.findAllByReceiverMemberIdAndScheduleDateBetween(memberId, startDate, endDate)
+            letterRepository.findAllByReceiverMemberIdAndScheduleDateBetween(receiverId, startDate, endDate)
                 .filter { it.id != null }
                 .map {
                     LetterQueryPort.Letter(
@@ -38,6 +38,11 @@ class LetterQueryAdapter(
             onSuccess = { Result.success(it) },
             onFailure = { Result.failure(LetterQueryPort.LetterReadFailException()) },
         )
+
+    override fun countByReceiverIdAndViewed(receiverId: Long, viewed: Boolean): Result<Long> =
+        runCatching {
+            return@runCatching letterRepository.countByReceiverMemberIdAndViewed(receiverId, viewed)
+        }
 
     companion object {
         private val log = LoggerFactory.getLogger(LetterQueryAdapter::class.java)
