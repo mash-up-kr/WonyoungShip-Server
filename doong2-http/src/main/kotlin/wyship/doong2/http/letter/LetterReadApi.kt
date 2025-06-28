@@ -3,23 +3,24 @@ package wyship.doong2.http.letter
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import wyship.doong2.core.letter.ReadLetterUseCase
-import wyship.doong2.core.letter.WriteLetterUseCase.LetterWriteFailException
-import wyship.doong2.core.letter.WriteLetterUseCase.WriteLetterUseCaseException
+import wyship.doong2.core.letter.LetterReadUseCase
+import wyship.doong2.core.letter.LetterWriteUseCase.LetterWriteFailException
+import wyship.doong2.core.letter.LetterWriteUseCase.WriteLetterUseCaseException
 import wyship.doong2.core.letter.domain.WeatherType
+import wyship.doong2.core.letter.model.command.LettersReadCommand
 import wyship.doong2.http.ApiResponse
 import wyship.doong2.http.HttpErrorType
 import wyship.doong2.http.LETTER_URL
 import wyship.doong2.http.config.LoginMember
-import wyship.doong2.http.letter.doc.LetterReadHttpAdapterSwagger
+import wyship.doong2.http.letter.doc.LetterReadApiSwagger
 import wyship.doong2.http.letter.doc.LetterReadSwagger
 import wyship.doong2.http.toApiResponse
 import java.time.LocalDate
 
-@LetterReadHttpAdapterSwagger
+@LetterReadApiSwagger
 @RestController
-class LetterReadHttpAdapter(
-    private val readLetterUseCase: ReadLetterUseCase,
+class LetterReadApi(
+    private val letterReadUseCase: LetterReadUseCase,
 ) {
 
     @LetterReadSwagger
@@ -28,8 +29,8 @@ class LetterReadHttpAdapter(
         @LoginMember memberId: Long,
         @RequestParam year: Int,
         @RequestParam month: Int,
-    ): ApiResponse<LettersReadResponse> = readLetterUseCase
-        .readByScheduleDate(ReadLetterUseCase.ReadLettersCommand(memberId, year, month))
+    ): ApiResponse<LettersReadResponse> = letterReadUseCase
+        .readByScheduleDate(LettersReadCommand(memberId, year, month))
         .toApiResponse(
             onSuccess = { result ->
                 LettersReadResponse(

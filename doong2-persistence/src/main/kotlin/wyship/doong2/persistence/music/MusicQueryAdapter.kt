@@ -9,12 +9,12 @@ class MusicQueryAdapter(
     private val musicRepository: MusicRepository,
 ) : MusicQueryPort {
 
-    override fun findById(musicId: Long): Result<MusicQueryPort.ReadMusicResult> =
+    override fun findById(musicId: Long): Result<MusicQueryPort.Music> =
         runCatching {
             musicRepository.findById(musicId)
                 .filter { it.id != null }
                 .map {
-                    MusicQueryPort.ReadMusicResult(
+                    MusicQueryPort.Music(
                         id = it.id!!,
                         title = it.title,
                         artist = it.artist,
@@ -31,12 +31,12 @@ class MusicQueryAdapter(
             onFailure = { Result.failure(MusicQueryPort.MusicQueryFailException()) },
         )
 
-    override fun findAll(): Result<List<MusicQueryPort.ReadMusicResult>> =
+    override fun findAll(): Result<List<MusicQueryPort.Music>> =
         runCatching {
             musicRepository.findAll()
                 .filter { it.id != null }
                 .map {
-                    MusicQueryPort.ReadMusicResult(
+                    MusicQueryPort.Music(
                         id = it.id!!,
                         title = it.title,
                         artist = it.artist,

@@ -6,7 +6,7 @@ import wyship.doong2.core.letter.domain.WeatherType
 import wyship.doong2.core.letter.port.LetterSavePort
 import java.time.LocalDate
 
-interface WriteLetterUseCase {
+interface LetterWriteUseCase {
     fun write(command: WriteLetterCommand): Result<WriteLetterResult>
 
     data class WriteLetterCommand(
@@ -30,11 +30,11 @@ interface WriteLetterUseCase {
 }
 
 @Service
-internal class WriteLetterService(
+internal class LetterWriteService(
     private val letterSavePort: LetterSavePort,
-) : WriteLetterUseCase {
+) : LetterWriteUseCase {
 
-    override fun write(command: WriteLetterUseCase.WriteLetterCommand): Result<WriteLetterUseCase.WriteLetterResult> {
+    override fun write(command: LetterWriteUseCase.WriteLetterCommand): Result<LetterWriteUseCase.WriteLetterResult> {
         val result = letterSavePort.saveLetter(
             LetterSavePort.SaveLetterCommand(
                 senderId = command.senderId,
@@ -49,10 +49,10 @@ internal class WriteLetterService(
         ).getOrElse { throw it }
 
         return Result
-            .success(WriteLetterUseCase.WriteLetterResult(letterId = result.letterId))
+            .success(LetterWriteUseCase.WriteLetterResult(letterId = result.letterId))
             .fold(
                 onSuccess = { Result.success(it) },
-                onFailure = { Result.failure(WriteLetterUseCase.LetterWriteFailException()) },
+                onFailure = { Result.failure(LetterWriteUseCase.LetterWriteFailException()) },
             )
     }
 }

@@ -10,9 +10,9 @@ interface LetterQueryPort {
         memberId: Long,
         startDate: LocalDate,
         endDate: LocalDate,
-    ): Result<List<ReadLetterResult>>
+    ): Result<List<Letter>>
 
-    data class ReadLetterResult(
+    data class Letter(
         val id: Long,
         val senderId: Long?,
         val senderNickname: String,

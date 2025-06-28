@@ -10,7 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import wyship.doong2.http.ApiResponse as CommonApiResponse
 
 @Tag(name = "편지 쓰기 API")
-annotation class LetterWriteHttpAdapterSwagger
+annotation class LetterWriteApiSwagger
 
 @Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
@@ -66,7 +66,7 @@ annotation class LetterWriteHttpAdapterSwagger
 annotation class LetterWriteSwagger
 
 @Tag(name = "편지 조회 API")
-annotation class LetterReadHttpAdapterSwagger
+annotation class LetterReadApiSwagger
 
 @Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
