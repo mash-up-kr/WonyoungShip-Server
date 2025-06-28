@@ -1,4 +1,4 @@
-package wyship.doong2.persistence.letter
+package wyship.doong2.persistence.music
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
