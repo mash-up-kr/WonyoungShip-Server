@@ -1,6 +1,6 @@
 package wyship.doong2.core.letter.model.result
 
-import wyship.doong2.core.letter.port.LetterQueryPort.Letter
+import wyship.doong2.core.letter.port.Letter
 
 data class LetterPreview(
     val letterId: Long,

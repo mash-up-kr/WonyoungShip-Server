@@ -2,8 +2,8 @@ package wyship.doong2.persistence.letter
 
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import wyship.doong2.core.letter.port.Letter
 import wyship.doong2.core.letter.port.LetterQueryPort
-import wyship.doong2.core.letter.port.LetterQueryPort.Letter
 import java.time.LocalDate
 
 @Component
