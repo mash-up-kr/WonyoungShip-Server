@@ -1,14 +1,19 @@
 package wyship.doong2.core.letter
 
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import wyship.doong2.core.exception.CommonException
+import wyship.doong2.core.fortunecookie.port.FortuneCookieQueryPort
 import wyship.doong2.core.letter.model.command.LettersReadCommand
+import wyship.doong2.core.letter.model.result.LetterDetailResult
 import wyship.doong2.core.letter.model.result.LetterPreview
 import wyship.doong2.core.letter.model.result.LettersDailyResult
 import wyship.doong2.core.letter.model.result.LettersWeeklyCountResult
 import wyship.doong2.core.letter.model.result.ReadLetterResult
 import wyship.doong2.core.letter.model.result.ReadLettersResult
 import wyship.doong2.core.letter.port.LetterQueryPort
+import wyship.doong2.core.letter.port.LetterUpdatePort
+import wyship.doong2.core.letter.port.LetterUpdatePort.LetterUpdateCommand
 import wyship.doong2.core.music.port.MusicQueryPort
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -21,15 +26,20 @@ interface LetterReadUseCase {
 
     fun readDailyReceivedLetters(memberId: Long, date: LocalDate): Result<LettersDailyResult>
 
+    fun readDetailLetter(memberId: Long, letterId: Long): Result<LetterDetailResult>
+
     sealed class LetterReadUseCaseException : CommonException()
 
     class LetterFailExceptionRead : LetterReadUseCaseException()
 }
 
 @Service
+@Transactional(readOnly = true)
 internal class LetterReadService(
     private val letterQueryPort: LetterQueryPort,
+    private val letterUpdatePort: LetterUpdatePort,
     private val musicQueryPort: MusicQueryPort,
+    private val fortuneCookieQueryPort: FortuneCookieQueryPort,
 ) : LetterReadUseCase {
 
     override fun readByScheduleDate(command: LettersReadCommand): Result<ReadLettersResult> {
@@ -95,6 +105,28 @@ internal class LetterReadService(
                 .toList()
 
             return@runCatching LettersDailyResult(date, letters)
+        }
+
+    @Transactional
+    override fun readDetailLetter(memberId: Long, letterId: Long): Result<LetterDetailResult> =
+        runCatching {
+            val letter = letterQueryPort.findById(letterId).getOrThrow()
+
+            if (letter.scheduleDate.isAfter(LocalDate.now()) || letter.receiverId != memberId) {
+                throw LetterQueryPort.LetterReadFailException()
+            }
+
+            letter.viewed = true
+            val updatedLetter = letterUpdatePort.updateLetter(LetterUpdateCommand.from(letter)).getOrThrow()
+
+            val music = updatedLetter.musicId?.let { musicQueryPort.findById(it).getOrThrow() }
+
+            val fortuneCookieMessage = updatedLetter.fortuneCookieId
+                ?.let { fortuneCookieQueryPort.findById(it) }
+                ?.getOrDefault(null)
+                ?.text
+
+            return@runCatching LetterDetailResult.from(updatedLetter, music, fortuneCookieMessage)
         }
 
     companion object {

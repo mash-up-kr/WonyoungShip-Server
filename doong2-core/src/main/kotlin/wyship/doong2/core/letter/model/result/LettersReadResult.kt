@@ -1,7 +1,7 @@
 package wyship.doong2.core.letter.model.result
 
 import wyship.doong2.core.letter.domain.WeatherType
-import wyship.doong2.core.letter.port.LetterQueryPort.Letter
+import wyship.doong2.core.letter.port.Letter
 import wyship.doong2.core.music.port.MusicQueryPort.Music
 import java.time.LocalDate
 

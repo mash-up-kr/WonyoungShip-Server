@@ -2,8 +2,8 @@ package wyship.doong2.persistence.letter
 
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import wyship.doong2.core.letter.port.Letter
 import wyship.doong2.core.letter.port.LetterQueryPort
-import wyship.doong2.core.letter.port.LetterQueryPort.Letter
 import java.time.LocalDate
 
 @Component
@@ -32,6 +32,7 @@ class LetterQueryAdapter(
                         fortuneCookieId = it.fortuneCookieId,
                         createdAt = it.createdAt,
                         viewed = it.viewed,
+                        marked = it.marked,
                     )
                 }
         }.onFailure {
@@ -49,6 +50,13 @@ class LetterQueryAdapter(
             return@runCatching letterRepository.findByReceiverMemberIdAndScheduleDate(receiverId, scheduleDate)
                 .mapNotNull { it.toDomain() }
         }
+
+    override fun findById(letterId: Long): Result<Letter> = runCatching {
+        letterRepository.findById(letterId).map {
+            it.toDomain()
+                ?: throw IllegalStateException("[LetterQueryAdapter][findById] failed to find letterId = $letterId")
+        }.orElseThrow { error("일치하는 letter 없음. id=$letterId") }
+    }
 
     override fun countByReceiverIdAndViewed(receiverId: Long, viewed: Boolean): Result<Long> =
         runCatching {

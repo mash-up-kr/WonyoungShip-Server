@@ -18,7 +18,8 @@ enum class HttpErrorType(
     INVALID_WRITE_LETTER("4301", "invalid content"),
 
     // letter read fail
-    INVALID_READ_LETTER("4301", "invalid letter"),
+    INVALID_READ_LETTER("4400", "invalid letter"),
+    INVALID_LETTER_SCHEDULE_DATE("4401", "invalid schedule date to read"),
 
     INTERNAL_ERROR("5000", "internal error"),
 }
