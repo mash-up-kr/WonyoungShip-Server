@@ -3,7 +3,9 @@ package wyship.doong2.core.letter
 import org.springframework.stereotype.Service
 import wyship.doong2.core.exception.CommonException
 import wyship.doong2.core.letter.model.command.LettersReadCommand
-import wyship.doong2.core.letter.model.result.LettersCountResult
+import wyship.doong2.core.letter.model.result.LetterPreview
+import wyship.doong2.core.letter.model.result.LettersDailyResult
+import wyship.doong2.core.letter.model.result.LettersWeeklyCountResult
 import wyship.doong2.core.letter.model.result.ReadLetterResult
 import wyship.doong2.core.letter.model.result.ReadLettersResult
 import wyship.doong2.core.letter.port.LetterQueryPort
@@ -15,7 +17,9 @@ import java.time.temporal.TemporalAdjusters
 interface LetterReadUseCase {
     fun readByScheduleDate(command: LettersReadCommand): Result<ReadLettersResult>
 
-    fun countWeeklyReceivedLetters(memberId: Long): Result<LettersCountResult>
+    fun countWeeklyReceivedLetters(memberId: Long): Result<LettersWeeklyCountResult>
+
+    fun readDailyReceivedLetters(memberId: Long, date: LocalDate): Result<LettersDailyResult>
 
     sealed class LetterReadUseCaseException : CommonException()
 
@@ -60,7 +64,7 @@ internal class LetterReadService(
             )
     }
 
-    override fun countWeeklyReceivedLetters(memberId: Long): Result<LettersCountResult> =
+    override fun countWeeklyReceivedLetters(memberId: Long): Result<LettersWeeklyCountResult> =
         runCatching {
             val today = LocalDate.now()
             val monday = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
@@ -77,10 +81,20 @@ internal class LetterReadService(
 
             val notViewedCount = letterQueryPort.countByReceiverIdAndViewed(memberId, false).getOrThrow()
 
-            return@runCatching LettersCountResult(
+            return@runCatching LettersWeeklyCountResult(
                 notViewedCount = notViewedCount,
                 receivedCountPerDay = receivedCountPerDay,
             )
+        }
+
+    override fun readDailyReceivedLetters(memberId: Long, date: LocalDate): Result<LettersDailyResult> =
+        runCatching {
+            val letters = letterQueryPort.findByReceiverIdAndScheduleDate(memberId, date)
+                .getOrThrow()
+                .map { LetterPreview.from(it) }
+                .toList()
+
+            return@runCatching LettersDailyResult(date, letters)
         }
 
     companion object {

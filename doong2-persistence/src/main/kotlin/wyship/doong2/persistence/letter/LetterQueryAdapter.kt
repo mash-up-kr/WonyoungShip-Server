@@ -3,6 +3,7 @@ package wyship.doong2.persistence.letter
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import wyship.doong2.core.letter.port.LetterQueryPort
+import wyship.doong2.core.letter.port.LetterQueryPort.Letter
 import java.time.LocalDate
 
 @Component
@@ -14,12 +15,12 @@ class LetterQueryAdapter(
         receiverId: Long,
         startDate: LocalDate,
         endDate: LocalDate,
-    ): Result<List<LetterQueryPort.Letter>> =
+    ): Result<List<Letter>> =
         runCatching {
             letterRepository.findAllByReceiverMemberIdAndScheduleDateBetween(receiverId, startDate, endDate)
                 .filter { it.id != null }
                 .map {
-                    LetterQueryPort.Letter(
+                    Letter(
                         id = it.id!!,
                         senderId = it.senderMemberId,
                         senderNickname = it.senderNickname,
@@ -30,6 +31,7 @@ class LetterQueryAdapter(
                         scheduleDate = it.scheduleDate,
                         fortuneCookieId = it.fortuneCookieId,
                         createdAt = it.createdAt,
+                        viewed = it.viewed,
                     )
                 }
         }.onFailure {
@@ -38,6 +40,15 @@ class LetterQueryAdapter(
             onSuccess = { Result.success(it) },
             onFailure = { Result.failure(LetterQueryPort.LetterReadFailException()) },
         )
+
+    override fun findByReceiverIdAndScheduleDate(
+        receiverId: Long,
+        scheduleDate: LocalDate,
+    ): Result<List<Letter>> =
+        runCatching {
+            return@runCatching letterRepository.findByReceiverMemberIdAndScheduleDate(receiverId, scheduleDate)
+                .mapNotNull { it.toDomain() }
+        }
 
     override fun countByReceiverIdAndViewed(receiverId: Long, viewed: Boolean): Result<Long> =
         runCatching {
