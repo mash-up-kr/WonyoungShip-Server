@@ -2,10 +2,13 @@ package wyship.doong2.http.setting
 
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import wyship.doong2.core.setting.CurrentSettingQueryUseCase
+import wyship.doong2.core.setting.EmailAlarmChangeUseCase
 import wyship.doong2.core.setting.WithdrawUseCase
 import wyship.doong2.http.ApiResponse
+import wyship.doong2.http.EMAIL_ALARM_SETTING_URL
 import wyship.doong2.http.GET_SETTING_URL
 import wyship.doong2.http.HttpErrorType
 import wyship.doong2.http.WITHDRAW_URL
@@ -16,6 +19,7 @@ import wyship.doong2.http.toApiResponse
 class SettingApi(
     private val currentSettingQueryUseCase: CurrentSettingQueryUseCase,
     private val withdrawUseCase: WithdrawUseCase,
+    private val emailAlarmChangeUseCase: EmailAlarmChangeUseCase,
 ) {
     @GetMapping(GET_SETTING_URL)
     fun getSetting(
@@ -39,7 +43,23 @@ class SettingApi(
                 onFailure = { ApiResponse(HttpErrorType.INTERNAL_ERROR) }, // TODO 익셉션 세분화하기.
             )
 
-    class MemberSettingResponse(
+    @PostMapping(EMAIL_ALARM_SETTING_URL)
+    fun changeEmailAlarm(
+        @LoginMember memberId: Long,
+        @RequestBody request: ChangeEmailSettingRequest,
+    ): ApiResponse<Unit> =
+        emailAlarmChangeUseCase
+            .changeEmailAlarm(memberId, request.isOn)
+            .toApiResponse(
+                onSuccess = { },
+                onFailure = { ApiResponse(HttpErrorType.INTERNAL_ERROR) }, // TODO 익셉션 세분화하기.
+            )
+
+    data class ChangeEmailSettingRequest(
+        val isOn: Boolean,
+    )
+
+    data class MemberSettingResponse(
         val email: String,
         val emailAlarm: Boolean,
         val tosUrl: String,
