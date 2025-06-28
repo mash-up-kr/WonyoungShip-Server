@@ -5,9 +5,9 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import wyship.doong2.core.letter.LetterWriteUseCase
 import wyship.doong2.core.letter.LetterWriteUseCase.LetterWriteFailException
-import wyship.doong2.core.letter.LetterWriteUseCase.WriteLetterCommand
 import wyship.doong2.core.letter.LetterWriteUseCase.WriteLetterUseCaseException
 import wyship.doong2.core.letter.domain.WeatherType
+import wyship.doong2.core.letter.model.command.LetterWriteCommand
 import wyship.doong2.http.ApiResponse
 import wyship.doong2.http.HttpErrorType
 import wyship.doong2.http.LETTER_URL
@@ -50,9 +50,9 @@ class LetterWriteApi(
         val weather: WeatherType,
         val musicId: Long?,
         val senderNickname: String,
-        val fortuneCookieId: Long?,
+        val needFortuneCookie: Boolean,
     ) {
-        fun toCommand(): WriteLetterCommand = WriteLetterCommand(
+        fun toCommand(): LetterWriteCommand = LetterWriteCommand(
             senderId = senderId,
             receiverId = receiverId,
             content = content,
@@ -60,7 +60,7 @@ class LetterWriteApi(
             weather = weather,
             musicId = musicId,
             senderNickname = senderNickname,
-            fortuneCookieId = fortuneCookieId,
+            needFortuneCookie = needFortuneCookie,
         )
     }
 
