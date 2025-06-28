@@ -16,5 +16,5 @@ data class Letter(
     val fortuneCookieId: Long?,
     val createdAt: LocalDateTime,
     var viewed: Boolean,
-    val marked: Boolean,
+    var marked: Boolean,
 )
