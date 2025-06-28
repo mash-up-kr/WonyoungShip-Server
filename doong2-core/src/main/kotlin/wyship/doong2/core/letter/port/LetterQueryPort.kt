@@ -7,10 +7,12 @@ import java.time.LocalDateTime
 
 interface LetterQueryPort {
     fun findByReceiverIdAndScheduleDate(
-        memberId: Long,
+        receiverId: Long,
         startDate: LocalDate,
         endDate: LocalDate,
     ): Result<List<Letter>>
+
+    fun countByReceiverIdAndViewed(receiverId: Long, viewed: Boolean): Result<Long>
 
     data class Letter(
         val id: Long,

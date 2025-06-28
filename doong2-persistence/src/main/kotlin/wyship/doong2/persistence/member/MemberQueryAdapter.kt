@@ -37,5 +37,5 @@ class MemberQueryAdapter(
             ?.takeIf(filterSoftDeleted())
             ?.let { Member(it.id!!, it.nickname, it.email, it.tokenId) }
 
-    private fun filterSoftDeleted(): (wyship.doong2.persistence.member.Member) -> Boolean = { it.deletedAt != null }
+    private fun filterSoftDeleted(): (wyship.doong2.persistence.member.Member) -> Boolean = { it.deletedAt == null }
 }
