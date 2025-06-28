@@ -15,11 +15,11 @@ internal class MemberEmailAlarmChangeService(
 ) : MemberEmailAlarmChangeUseCase {
     override fun offEmailAlarm(memberId: Long): Result<Unit> =
         runCatching {
-            memberEmailAlarmChangePort.onEmailAlarm(memberId)
+            memberEmailAlarmChangePort.offEmailAlarm(memberId)
         }
 
     override fun onEmailAlarm(memberId: Long): Result<Unit> =
         runCatching {
-            memberEmailAlarmChangePort.offEmailAlarm(memberId)
+            memberEmailAlarmChangePort.onEmailAlarm(memberId)
         }
 }
