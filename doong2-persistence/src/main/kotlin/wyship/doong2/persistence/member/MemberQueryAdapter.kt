@@ -20,22 +20,21 @@ class MemberQueryAdapter(
             return null
         }
         val member = memberList[0]
-        return Member(member.id!!, member.nickname, member.email, member.tokenId)
+        return Member(member.id!!, member.nickname, member.email, member.tokenId, member.emailAlarmAgreed)
     }
 
     @Transactional
     override fun findMemberByTokenIdOrNull(tokenId: String): Member? =
         memberRepository
             .findByTokenId(tokenId)
-            ?.takeIf(filterSoftDeleted())
-            ?.let { Member(it.id!!, it.nickname, it.email, it.tokenId) }
+            ?.let { Member(it.id!!, it.nickname, it.email, it.tokenId, it.emailAlarmAgreed) }
 
     @Transactional
     override fun findMemberByIdOrNull(id: Long): Member? =
         memberRepository
             .findMemberById(id)
-            ?.takeIf(filterSoftDeleted())
-            ?.let { Member(it.id!!, it.nickname, it.email, it.tokenId) }
+            ?.let { Member(it.id!!, it.nickname, it.email, it.tokenId, it.emailAlarmAgreed) }
 
-    private fun filterSoftDeleted(): (wyship.doong2.persistence.member.Member) -> Boolean = { it.deletedAt == null }
+    private fun filterSoftDeleted(): (wyship.doong2.persistence.member.MemberEntity) -> Boolean =
+        { it.deletedAt == null }
 }

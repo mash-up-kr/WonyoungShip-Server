@@ -1,4 +1,4 @@
-package wyship.doong2.persistence.member
+package wyship.doong2.persistence.setting
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -9,15 +9,13 @@ import jakarta.persistence.Table
 import wyship.doong2.persistence.base.BaseTimeEntity
 
 @Entity
-@Table(name = "members")
-data class Member(
+@Table(name = "service_properties")
+class ServicePropertyEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
     @Column(nullable = false)
-    val email: String,
+    val serviceKey: String,
     @Column(nullable = false)
-    val nickname: String,
-    @Column(nullable = false)
-    val tokenId: String,
+    val serviceValue: String,
 ) : BaseTimeEntity()

@@ -14,12 +14,17 @@ class MemberSaveAdapter(
     @Transactional
     override fun saveMember(command: SaveMemberCommand): Result<SaveMemberResult> =
         runCatching {
-            val member =
+            val memberEntity =
                 memberRepository.save(
-                    Member(email = command.email, nickname = command.nickname, tokenId = command.tokenId),
+                    MemberEntity(
+                        email = command.email,
+                        nickname = command.nickname,
+                        tokenId = command.tokenId,
+                        emailAlarmAgreed = true,
+                    ),
                 )
             SaveMemberResult(
-                member.id
+                memberEntity.id
                     ?: throw IllegalStateException(
                         "[MemberSaveAdapter][saveMember] member id is null. check orm or transaction",
                     ),

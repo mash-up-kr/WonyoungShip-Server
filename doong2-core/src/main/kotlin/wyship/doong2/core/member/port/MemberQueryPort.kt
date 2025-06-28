@@ -12,5 +12,6 @@ interface MemberQueryPort {
         val name: String,
         val email: String,
         val tokenId: String,
+        val emailAlarmAgreed: Boolean,
     )
 }
