@@ -7,12 +7,14 @@ data class LetterPreviewResponse(
     val letterId: Long,
     val content: String?,
     val scheduleDate: LocalDate,
+    val marked: Boolean,
 ) {
     companion object {
         fun from(letter: LetterPreview): LetterPreviewResponse = LetterPreviewResponse(
             letterId = letter.letterId,
             content = letter.content,
             scheduleDate = letter.scheduleDate,
+            marked = letter.marked,
         )
     }
 }

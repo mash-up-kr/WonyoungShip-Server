@@ -4,13 +4,11 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import wyship.doong2.core.exception.CommonException
 import wyship.doong2.core.fortunecookie.port.FortuneCookieQueryPort
-import wyship.doong2.core.letter.model.command.LettersReadCommand
 import wyship.doong2.core.letter.model.result.LetterDetailResult
 import wyship.doong2.core.letter.model.result.LetterPreview
 import wyship.doong2.core.letter.model.result.LettersDailyResult
+import wyship.doong2.core.letter.model.result.LettersMonthlyResult
 import wyship.doong2.core.letter.model.result.LettersWeeklyCountResult
-import wyship.doong2.core.letter.model.result.ReadLetterResult
-import wyship.doong2.core.letter.model.result.ReadLettersResult
 import wyship.doong2.core.letter.port.LetterQueryPort
 import wyship.doong2.core.letter.port.LetterUpdatePort
 import wyship.doong2.core.letter.port.LetterUpdatePort.LetterUpdateCommand
@@ -20,7 +18,7 @@ import java.time.LocalDate
 import java.time.temporal.TemporalAdjusters
 
 interface LetterReadUseCase {
-    fun readByScheduleDate(command: LettersReadCommand): Result<ReadLettersResult>
+    fun readMonthlyReceivedLetters(memberId: Long, year: Int, month: Int): Result<LettersMonthlyResult>
 
     fun countWeeklyReceivedLetters(memberId: Long): Result<LettersWeeklyCountResult>
 
@@ -42,30 +40,27 @@ internal class LetterReadService(
     private val fortuneCookieQueryPort: FortuneCookieQueryPort,
 ) : LetterReadUseCase {
 
-    override fun readByScheduleDate(command: LettersReadCommand): Result<ReadLettersResult> {
-        val startDate = LocalDate.of(command.year, command.month, FIRST_DAY_OF_MONTH)
-        val endDate = startDate.withDayOfMonth(startDate.lengthOfMonth())
+    override fun readMonthlyReceivedLetters(memberId: Long, year: Int, month: Int): Result<LettersMonthlyResult> {
+        val firstMonthDate = LocalDate.of(year, month, FIRST_DAY_OF_MONTH)
+        val startDate = firstMonthDate.minusDays(7)
+        val today = LocalDate.now()
+        val endDate = firstMonthDate.withDayOfMonth(firstMonthDate.lengthOfMonth() + 7)
 
-        val musicMap = musicQueryPort.findAll()
+        val letters = letterQueryPort.findByReceiverIdAndScheduleDate(memberId, startDate, endDate)
             .getOrElse { throw it }
-            .associateBy { it.id }
 
-        val letters = letterQueryPort.findByReceiverIdAndScheduleDate(command.memberId, startDate, endDate)
-            .getOrElse { throw it }
-            .sortedBy { it.scheduleDate }
-            .map { letter ->
-                ReadLetterResult.from(
-                    letter,
-                    letter.musicId?.let { id -> musicMap[id] },
-                )
-            }
+        val validLetters = letters
+            .map { LetterPreview.from(it) }
+            .filter { it.scheduleDate >= firstMonthDate && it.scheduleDate <= today }
+            .toList()
 
         return Result
             .success(
-                ReadLettersResult(
-                    year = command.year,
-                    month = command.month,
-                    letters = letters,
+                LettersMonthlyResult(
+                    year = year,
+                    month = month,
+                    letters = validLetters,
+                    days = letters.map { it.scheduleDate }.distinct().toList(),
                 ),
             )
             .fold(
