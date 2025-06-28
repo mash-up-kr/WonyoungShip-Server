@@ -4,8 +4,11 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import wyship.doong2.core.exception.CommonException
 import wyship.doong2.core.fortunecookie.port.FortuneCookieQueryPort
-import wyship.doong2.core.letter.model.command.LettersReadCommand
-import wyship.doong2.core.letter.model.result.*
+import wyship.doong2.core.letter.model.result.LetterDetailResult
+import wyship.doong2.core.letter.model.result.LetterPreview
+import wyship.doong2.core.letter.model.result.LettersDailyResult
+import wyship.doong2.core.letter.model.result.LettersMonthlyResult
+import wyship.doong2.core.letter.model.result.LettersWeeklyCountResult
 import wyship.doong2.core.letter.port.LetterQueryPort
 import wyship.doong2.core.letter.port.LetterUpdatePort
 import wyship.doong2.core.letter.port.LetterUpdatePort.LetterUpdateCommand
