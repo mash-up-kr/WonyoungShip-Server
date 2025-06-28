@@ -1,11 +1,13 @@
 package wyship.doong2.http.letter
 
+import io.swagger.v3.oas.annotations.Operation
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import wyship.doong2.core.letter.LetterReadUseCase
-import wyship.doong2.core.letter.LetterWriteUseCase.LetterWriteFailException
-import wyship.doong2.core.letter.LetterWriteUseCase.WriteLetterUseCaseException
+import wyship.doong2.core.letter.LetterReadUseCase.LetterFailExceptionRead
+import wyship.doong2.core.letter.LetterReadUseCase.LetterReadUseCaseException
 import wyship.doong2.core.letter.domain.WeatherType
 import wyship.doong2.core.letter.model.command.LettersReadCommand
 import wyship.doong2.http.ApiResponse
@@ -14,17 +16,33 @@ import wyship.doong2.http.LETTER_URL
 import wyship.doong2.http.config.LoginMember
 import wyship.doong2.http.letter.doc.LetterReadApiSwagger
 import wyship.doong2.http.letter.doc.LetterReadSwagger
+import wyship.doong2.http.letter.model.LettersWeeklyCountResponse
 import wyship.doong2.http.toApiResponse
 import java.time.LocalDate
 
 @LetterReadApiSwagger
 @RestController
+@RequestMapping(LETTER_URL)
 class LetterReadApi(
     private val letterReadUseCase: LetterReadUseCase,
 ) {
 
+    @Operation(
+        summary = "주간 편지 개수 정보 조회",
+        description = "특정 년도, 월에 해당하는 편지 목록을 조회합니다.",
+    )
+    @GetMapping("/count/weekly")
+    fun readWeeklyCount(
+        @LoginMember memberId: Long,
+    ): ApiResponse<LettersWeeklyCountResponse> = letterReadUseCase
+        .countWeeklyReceivedLetters(memberId)
+        .toApiResponse(
+            onSuccess = { LettersWeeklyCountResponse.from(it) },
+            onFailure = { onFailure(it) },
+        )
+
     @LetterReadSwagger
-    @GetMapping(LETTER_URL)
+    @GetMapping
     fun readLetters(
         @LoginMember memberId: Long,
         @RequestParam year: Int,
@@ -55,16 +73,17 @@ class LetterReadApi(
                     },
                 )
             },
-            onFailure = { exception ->
-                if (exception is WriteLetterUseCaseException) {
-                    when (exception) {
-                        is LetterWriteFailException -> ApiResponse(HttpErrorType.INVALID_WRITE_LETTER)
-                    }
-                } else {
-                    ApiResponse(HttpErrorType.INTERNAL_ERROR)
-                }
-            },
+            onFailure = { onFailure(it) },
         )
+
+    fun <T> onFailure(exception: Throwable): ApiResponse<T> {
+        val letterException = exception as? LetterReadUseCaseException
+        return when (letterException) {
+            is LetterFailExceptionRead -> ApiResponse(HttpErrorType.INVALID_READ_LETTER)
+            null -> ApiResponse(HttpErrorType.INTERNAL_ERROR)
+            else -> ApiResponse(HttpErrorType.INTERNAL_ERROR)
+        }
+    }
 
     data class LettersReadResponse(
         val year: Int,

@@ -10,4 +10,6 @@ interface LetterRepository : JpaRepository<LetterEntity, Long> {
         startDate: LocalDate,
         endDate: LocalDate,
     ): List<LetterEntity>
+
+    fun countByReceiverMemberIdAndViewed(receiverMemberId: Long, viewed: Boolean): Long
 }
