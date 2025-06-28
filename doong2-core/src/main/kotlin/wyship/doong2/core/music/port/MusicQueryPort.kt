@@ -12,6 +12,7 @@ interface MusicQueryPort {
         val title: String,
         val artist: String,
         val url: String,
+        val mood: String,
     )
 
     class MusicQueryFailException : CommonException()

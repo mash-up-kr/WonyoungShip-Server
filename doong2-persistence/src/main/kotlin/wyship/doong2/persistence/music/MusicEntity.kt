@@ -22,4 +22,7 @@ data class MusicEntity(
 
     @Column(nullable = false)
     val url: String,
+
+    @Column(nullable = false)
+    val mood: String,
 )
