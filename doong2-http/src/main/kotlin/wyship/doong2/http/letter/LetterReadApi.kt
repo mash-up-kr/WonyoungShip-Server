@@ -9,16 +9,14 @@ import org.springframework.web.bind.annotation.RestController
 import wyship.doong2.core.letter.LetterReadUseCase
 import wyship.doong2.core.letter.LetterReadUseCase.LetterFailExceptionRead
 import wyship.doong2.core.letter.LetterReadUseCase.LetterReadUseCaseException
-import wyship.doong2.core.letter.domain.WeatherType
-import wyship.doong2.core.letter.model.command.LettersReadCommand
 import wyship.doong2.http.ApiResponse
 import wyship.doong2.http.HttpErrorType
 import wyship.doong2.http.LETTER_URL
 import wyship.doong2.http.config.LoginMember
 import wyship.doong2.http.letter.doc.LetterReadApiSwagger
-import wyship.doong2.http.letter.doc.LetterReadSwagger
 import wyship.doong2.http.letter.model.LetterDetailResponse
 import wyship.doong2.http.letter.model.LettersDailyResponse
+import wyship.doong2.http.letter.model.LettersMonthlyResponse
 import wyship.doong2.http.letter.model.LettersWeeklyCountResponse
 import wyship.doong2.http.toApiResponse
 import java.time.LocalDate
@@ -74,38 +72,19 @@ class LetterReadApi(
             onFailure = { onFailure(it) },
         )
 
-    @LetterReadSwagger
+    @Operation(
+        summary = "편지 목록 조회 API",
+        description = "특정 년도, 월에 해당하는 편지 목록을 조회합니다.",
+    )
     @GetMapping
     fun readLetters(
         @LoginMember memberId: Long,
         @RequestParam year: Int,
         @RequestParam month: Int,
-    ): ApiResponse<LettersReadResponse> = letterReadUseCase
-        .readByScheduleDate(LettersReadCommand(memberId, year, month))
+    ): ApiResponse<LettersMonthlyResponse> = letterReadUseCase
+        .readMonthlyReceivedLetters(memberId, year, month)
         .toApiResponse(
-            onSuccess = { result ->
-                LettersReadResponse(
-                    year = year,
-                    month = month,
-                    letters = result.letters.map { letter ->
-                        LetterReadResponse(
-                            senderNickName = letter.senderNickName,
-                            createdDate = letter.createdDate,
-                            scheduleDate = letter.scheduleDate,
-                            weatherType = letter.weatherType,
-                            content = letter.content,
-                            music = letter.music?.let {
-                                LetterMusicReadResponse(
-                                    title = it.title,
-                                    artist = it.artist,
-                                    url = it.url,
-                                )
-                            },
-                            fortuneCookieId = letter.fortuneCookieId,
-                        )
-                    },
-                )
-            },
+            onSuccess = { LettersMonthlyResponse.from(it) },
             onFailure = { onFailure(it) },
         )
 
@@ -117,26 +96,4 @@ class LetterReadApi(
             else -> ApiResponse(HttpErrorType.INTERNAL_ERROR)
         }
     }
-
-    data class LettersReadResponse(
-        val year: Int,
-        val month: Int,
-        val letters: List<LetterReadResponse>,
-    )
-
-    data class LetterReadResponse(
-        val senderNickName: String,
-        val createdDate: LocalDate,
-        val scheduleDate: LocalDate,
-        val weatherType: WeatherType,
-        val content: String,
-        val music: LetterMusicReadResponse?,
-        val fortuneCookieId: Long?,
-    )
-
-    data class LetterMusicReadResponse(
-        val title: String,
-        val artist: String,
-        val url: String,
-    )
 }
