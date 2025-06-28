@@ -6,12 +6,23 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 interface LetterQueryPort {
+    /**
+     * find
+     */
     fun findByReceiverIdAndScheduleDate(
         receiverId: Long,
         startDate: LocalDate,
         endDate: LocalDate,
     ): Result<List<Letter>>
 
+    fun findByReceiverIdAndScheduleDate(
+        receiverId: Long,
+        scheduleDate: LocalDate,
+    ): Result<List<Letter>>
+
+    /**
+     * count
+     */
     fun countByReceiverIdAndViewed(receiverId: Long, viewed: Boolean): Result<Long>
 
     data class Letter(
@@ -25,6 +36,7 @@ interface LetterQueryPort {
         val scheduleDate: LocalDate,
         val fortuneCookieId: Long?,
         val createdAt: LocalDateTime,
+        val viewed: Boolean,
     )
 
     class LetterReadFailException : CommonException()

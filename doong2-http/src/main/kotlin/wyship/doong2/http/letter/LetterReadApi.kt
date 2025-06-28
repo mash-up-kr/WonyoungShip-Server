@@ -16,6 +16,7 @@ import wyship.doong2.http.LETTER_URL
 import wyship.doong2.http.config.LoginMember
 import wyship.doong2.http.letter.doc.LetterReadApiSwagger
 import wyship.doong2.http.letter.doc.LetterReadSwagger
+import wyship.doong2.http.letter.model.LettersDailyResponse
 import wyship.doong2.http.letter.model.LettersWeeklyCountResponse
 import wyship.doong2.http.toApiResponse
 import java.time.LocalDate
@@ -28,8 +29,23 @@ class LetterReadApi(
 ) {
 
     @Operation(
+        summary = "일간 편지 목록 정보 조회",
+        description = "특정한 날에 받은 편지 목록을 조회합니다.",
+    )
+    @GetMapping("/daily")
+    fun readDailyLetters(
+        @LoginMember memberId: Long,
+        @RequestParam date: LocalDate,
+    ): ApiResponse<LettersDailyResponse> = letterReadUseCase
+        .readDailyReceivedLetters(memberId, date)
+        .toApiResponse(
+            onSuccess = { LettersDailyResponse.from(it) },
+            onFailure = { onFailure(it) },
+        )
+
+    @Operation(
         summary = "주간 편지 개수 정보 조회",
-        description = "특정 년도, 월에 해당하는 편지 목록을 조회합니다.",
+        description = "이번 주에 받은 편지 개수를 조회합니다.",
     )
     @GetMapping("/count/weekly")
     fun readWeeklyCount(
