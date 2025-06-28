@@ -10,7 +10,7 @@ import wyship.doong2.core.letter.WriteLetterUseCase.WriteLetterUseCaseException
 import wyship.doong2.core.letter.domain.WeatherType
 import wyship.doong2.http.ApiResponse
 import wyship.doong2.http.HttpErrorType
-import wyship.doong2.http.LETTER_WRITE_URL
+import wyship.doong2.http.LETTER_URL
 import wyship.doong2.http.letter.doc.LetterWriteHttpAdapterSwagger
 import wyship.doong2.http.letter.doc.LetterWriteSwagger
 import wyship.doong2.http.toApiResponse
@@ -23,7 +23,7 @@ class LetterWriteHttpAdapter(
 ) {
 
     @LetterWriteSwagger
-    @PostMapping(LETTER_WRITE_URL)
+    @PostMapping(LETTER_URL)
     fun writeLetter(
         @RequestBody request: LetterWriteRequest,
     ): ApiResponse<LetterWriteResponse> =

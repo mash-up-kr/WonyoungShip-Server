@@ -64,3 +64,60 @@ annotation class LetterWriteHttpAdapterSwagger
     ],
 )
 annotation class LetterWriteSwagger
+
+@Tag(name = "편지 조회 API")
+annotation class LetterReadHttpAdapterSwagger
+
+@Target(AnnotationTarget.FUNCTION)
+@Retention(AnnotationRetention.RUNTIME)
+@Operation(
+    summary = "편지 목록 조회 API",
+    description = "특정 년도, 월에 해당하는 편지 목록을 조회합니다.",
+)
+@ApiResponses(
+    value = [
+        ApiResponse(
+            responseCode = "200",
+            description = "성공 응답",
+            content = [
+                Content(
+                    mediaType = "application/json",
+                    schema = Schema(implementation = CommonApiResponse::class),
+                    examples = [
+                        ExampleObject(
+                            name = "성공 응답",
+                            value = """
+                                {
+                                  "code": "0000",
+                                  "message": "SUCCESS",
+                                  "data": {
+                                    "year": 2025,
+                                    "month": 6,
+                                    "letters": [
+                                      {
+                                        "senderNickName": "보낸 사람",
+                                        "createdDate": "2025-06-26",
+                                        "scheduleDate": "2025-06-27",
+                                        "weatherType": "SUNNY",
+                                        "content": "편지 테스트",
+                                        "music": {
+                                          "title": "Dirty Work",
+                                          "artist": "aespa",
+                                          "url": "https://www.test.com"
+                                        },
+                                        "fortuneCookieId": 1
+                                      }
+                                    ]
+                                  },
+                                  "pageIndex": null,
+                                  "pageSize": null
+                                }
+                            """,
+                        ),
+                    ],
+                ),
+            ],
+        ),
+    ],
+)
+annotation class LetterReadSwagger
