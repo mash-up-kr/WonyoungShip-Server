@@ -8,9 +8,9 @@ import wyship.doong2.core.fortunecookie.port.FortuneCookieQueryPort.FortuneCooki
 import wyship.doong2.core.letter.domain.WeatherType
 
 @Component
-class FortuneCookieQueryAdapter (
+class FortuneCookieQueryAdapter(
     private val fortuneCookieRepository: FortuneCookieRepository,
-): FortuneCookieQueryPort {
+) : FortuneCookieQueryPort {
     override fun findRandomByWeatherType(weatherType: WeatherType): Result<FortuneCookie> = runCatching {
         val result = fortuneCookieRepository
             .findRandomByWeatherType(weatherType, PageRequest.of(0, 1))
@@ -20,7 +20,7 @@ class FortuneCookieQueryAdapter (
         return@runCatching FortuneCookie(
             id = result.id!!,
             text = result.text,
-            weatherType = result.weatherType
+            weatherType = result.weatherType,
         )
     }
 
@@ -31,7 +31,7 @@ class FortuneCookieQueryAdapter (
         return@runCatching FortuneCookie(
             id = entity.id!!,
             text = entity.text,
-            weatherType = entity.weatherType
+            weatherType = entity.weatherType,
         )
     }
 }

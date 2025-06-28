@@ -21,7 +21,7 @@ class LetterSaveAdapter(
                 musicId = command.musicId,
                 senderNickname = command.senderNickname,
                 fortuneCookieId = command.fortuneCookieId,
-            )
+            ),
         )
 
         return@runCatching SaveLetterResult(letterEntity.id ?: error("letter id is null"))

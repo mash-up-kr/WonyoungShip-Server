@@ -11,8 +11,8 @@ interface FortuneCookieQueryPort {
     data class FortuneCookie(
         val id: Long,
         val weatherType: WeatherType,
-        val text: String
+        val text: String,
     )
 
-    class FortuneCookieQueryException: CommonException()
+    class FortuneCookieQueryException : CommonException()
 }

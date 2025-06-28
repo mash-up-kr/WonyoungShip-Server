@@ -13,7 +13,7 @@ import wyship.doong2.persistence.base.BaseTimeEntity
 
 @Entity
 @Table(name = "fortune_cookies")
-data class FortuneCookieEntity (
+data class FortuneCookieEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,
