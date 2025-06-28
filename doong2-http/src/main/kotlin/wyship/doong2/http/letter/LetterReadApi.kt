@@ -2,6 +2,7 @@ package wyship.doong2.http.letter
 
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -16,6 +17,7 @@ import wyship.doong2.http.LETTER_URL
 import wyship.doong2.http.config.LoginMember
 import wyship.doong2.http.letter.doc.LetterReadApiSwagger
 import wyship.doong2.http.letter.doc.LetterReadSwagger
+import wyship.doong2.http.letter.model.LetterDetailResponse
 import wyship.doong2.http.letter.model.LettersDailyResponse
 import wyship.doong2.http.letter.model.LettersWeeklyCountResponse
 import wyship.doong2.http.toApiResponse
@@ -27,6 +29,21 @@ import java.time.LocalDate
 class LetterReadApi(
     private val letterReadUseCase: LetterReadUseCase,
 ) {
+
+    @Operation(
+        summary = "편지 상세 조회",
+        description = "읽을 수 있는 편지의 상세 정보를 조회합니다.",
+    )
+    @GetMapping("/detail/{letterId}")
+    fun readDetailLetter(
+        @LoginMember memberId: Long,
+        @PathVariable letterId: Long,
+    ): ApiResponse<LetterDetailResponse> = letterReadUseCase
+        .readDetailLetter(memberId, letterId)
+        .toApiResponse(
+            onSuccess = { LetterDetailResponse.from(it) },
+            onFailure = { onFailure(it) },
+        )
 
     @Operation(
         summary = "일간 편지 목록 정보 조회",

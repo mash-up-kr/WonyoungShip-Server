@@ -9,7 +9,7 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import wyship.doong2.core.letter.domain.WeatherType
-import wyship.doong2.core.letter.port.LetterQueryPort.Letter
+import wyship.doong2.core.letter.port.Letter
 import wyship.doong2.persistence.base.BaseTimeEntity
 import java.time.LocalDate
 
@@ -46,10 +46,10 @@ data class LetterEntity(
     val fortuneCookieId: Long? = null,
 
     @Column(nullable = false)
-    val viewed: Boolean = false,
+    var viewed: Boolean = false,
 
     @Column(nullable = false)
-    val marked: Boolean = false,
+    var marked: Boolean = false,
 ) : BaseTimeEntity() {
 
     fun toDomain(): Letter? = this.id?.let { id ->
@@ -65,6 +65,7 @@ data class LetterEntity(
             fortuneCookieId = this.fortuneCookieId,
             createdAt = this.createdAt,
             viewed = this.viewed,
+            marked = this.marked,
         )
     }
 }
