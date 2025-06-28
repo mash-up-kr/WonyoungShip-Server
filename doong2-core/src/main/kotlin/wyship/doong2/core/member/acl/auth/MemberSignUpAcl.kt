@@ -1,4 +1,4 @@
-package wyship.doong2.core.member.acl
+package wyship.doong2.core.member.acl.auth
 
 import org.springframework.stereotype.Component
 import wyship.doong2.core.auth.port.MemberSignUpPort

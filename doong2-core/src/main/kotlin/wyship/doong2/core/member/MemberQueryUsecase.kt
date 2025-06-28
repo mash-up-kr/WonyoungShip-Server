@@ -20,6 +20,7 @@ interface MemberQueryUseCase {
         val email: String,
         val name: String,
         val tokenId: String,
+        val emailAlarmAgreed: Boolean,
     )
 
     class MemberNotFoundByEmailException : CommonException()
@@ -42,6 +43,7 @@ internal class MemberQueryService(
                 member.email,
                 member.name,
                 member.tokenId,
+                member.emailAlarmAgreed,
             )
         }
 
@@ -54,6 +56,7 @@ internal class MemberQueryService(
                 member.email,
                 member.name,
                 member.tokenId,
+                member.emailAlarmAgreed,
             )
         }
 
@@ -66,6 +69,7 @@ internal class MemberQueryService(
                 member.email,
                 member.name,
                 member.tokenId,
+                member.emailAlarmAgreed,
             )
         }
 }

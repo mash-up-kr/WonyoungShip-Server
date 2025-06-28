@@ -14,13 +14,13 @@ import wyship.doong2.core.auth.AuthenticateWithKakaoUseCase.MemberSignUpFailExce
 import wyship.doong2.http.ApiResponse
 import wyship.doong2.http.HttpErrorType
 import wyship.doong2.http.LOGIN_URL
-import wyship.doong2.http.auth.doc.KakaoLoginHttpAdapterSwagger
+import wyship.doong2.http.auth.doc.KakaoLoginApiSwagger
 import wyship.doong2.http.auth.doc.KakaoLoginSwagger
 import wyship.doong2.http.toApiResponse
 
-@KakaoLoginHttpAdapterSwagger
+@KakaoLoginApiSwagger
 @RestController
-class KakaoLoginHttpAdapter(
+class KakaoLoginApiAdapter(
     private val authenticateWithKakaoUseCaseService: AuthenticateWithKakaoUseCase,
 ) {
     @KakaoLoginSwagger

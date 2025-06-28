@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
 
 @Tag(name = "카카오 로그인 API")
-annotation class KakaoLoginHttpAdapterSwagger
+annotation class KakaoLoginApiSwagger
 
 @Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)

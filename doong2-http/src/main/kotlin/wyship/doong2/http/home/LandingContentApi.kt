@@ -4,13 +4,13 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 import wyship.doong2.http.ApiResponse
 import wyship.doong2.http.LANDING_CONTENT_URL
-import wyship.doong2.http.home.doc.LandingContentHttpAdapterSwagger
+import wyship.doong2.http.home.doc.LandingContentApiSwagger
 import wyship.doong2.http.home.doc.LandingContentSwagger
 import kotlin.random.Random
 
-@LandingContentHttpAdapterSwagger
+@LandingContentApiSwagger
 @RestController
-class LandingContentHttpAdapter {
+class LandingContentApi {
     @LandingContentSwagger
     @GetMapping(LANDING_CONTENT_URL)
     fun getLandingContent(): ApiResponse<List<String>> {
