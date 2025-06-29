@@ -18,7 +18,10 @@ class AuthInterceptor(
         val authHeader = request.getHeader("Authorization") ?: return unauthorized(response)
         val token = authHeader.removePrefix("Bearer ").trim()
 
-        val memberId = 1L
+        val memberId =
+            authenticateWithJwtUseCase
+                .authenticateAndGetId(token)
+                .getOrElse { return unauthorized(response) }
 
         request.setAttribute("memberId", memberId)
         return true

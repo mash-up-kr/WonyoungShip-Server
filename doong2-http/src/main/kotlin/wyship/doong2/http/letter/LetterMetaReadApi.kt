@@ -25,7 +25,7 @@ class LetterMetaReadApi(
     )
     @GetMapping("/meta")
     fun readLetterMeta(
-        @LoginMember memberId: Long,
+        @LoginMember memberId: Long?,
         @RequestParam receiverId: Long,
     ): ApiResponse<LetterMetaReadResponse> = letterMetaReadUseCase
         .read(LetterMetaReadCommand(senderId = memberId, receiverId = receiverId))
