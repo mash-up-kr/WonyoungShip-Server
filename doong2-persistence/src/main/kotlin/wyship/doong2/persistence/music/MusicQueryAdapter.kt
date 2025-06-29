@@ -19,6 +19,7 @@ class MusicQueryAdapter(
                         title = it.title,
                         artist = it.artist,
                         url = it.url,
+                        mood = it.mood,
                     )
                 }
                 .orElseThrow {
@@ -41,6 +42,7 @@ class MusicQueryAdapter(
                         title = it.title,
                         artist = it.artist,
                         url = it.url,
+                        mood = it.mood,
                     )
                 }
         }.onFailure {

@@ -17,11 +17,8 @@ class LoginMemberArgumentResolver : HandlerMethodArgumentResolver {
         mavContainer: ModelAndViewContainer?,
         webRequest: NativeWebRequest,
         binderFactory: WebDataBinderFactory?,
-    ): Any {
+    ): Any? {
         val request = webRequest.nativeRequest as HttpServletRequest
         return request.getAttribute("memberId")
-            ?: throw IllegalArgumentException(
-                "[LoginMemberArgumentResolver][resolveArgument] memberId is null. check interceptor config",
-            )
     }
 }
