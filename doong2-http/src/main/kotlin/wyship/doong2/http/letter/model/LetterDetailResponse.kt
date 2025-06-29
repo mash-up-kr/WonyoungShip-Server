@@ -33,12 +33,14 @@ data class LetterMusicResponse(
     val title: String,
     val artist: String,
     val url: String,
+    val mood: String,
 ) {
     companion object {
         fun from(music: LetterMusic): LetterMusicResponse = LetterMusicResponse(
             title = music.title,
             artist = music.artist,
             url = music.url,
+            mood = music.mood,
         )
     }
 }
