@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service
 import wyship.doong2.core.exception.CommonException
 import wyship.doong2.core.letter.model.command.LetterMetaReadCommand
 import wyship.doong2.core.letter.model.result.LetterMetaReadResult
-import wyship.doong2.core.letter.model.result.ReadLetterMusicResult
+import wyship.doong2.core.letter.model.result.LetterMusic
 import wyship.doong2.core.member.port.MemberQueryPort
 import wyship.doong2.core.music.port.MusicQueryPort
 
@@ -31,7 +31,7 @@ internal class LetterMetaReadService(
         LetterMetaReadResult(
             senderNickname = sender?.name,
             receiverNickname = receiver.name,
-            musics = ReadLetterMusicResult.from(musics),
+            musics = LetterMusic.from(musics),
         )
     }
 }
