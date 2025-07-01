@@ -1,0 +1,3 @@
+springdoc:
+    default-produces-media-type: application/json
+    default-consumes-media-type: application/json
