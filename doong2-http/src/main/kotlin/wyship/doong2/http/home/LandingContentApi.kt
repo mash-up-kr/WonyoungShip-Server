@@ -3,6 +3,7 @@ package wyship.doong2.http.home
 import com.fasterxml.jackson.annotation.JsonFormat
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import wyship.doong2.core.letter.domain.WeatherType
 import wyship.doong2.core.letter.domain.WeatherType.CLOUDY
@@ -17,11 +18,12 @@ import wyship.doong2.http.home.doc.LandingContentSwagger
 import java.time.LocalDate
 import kotlin.random.Random
 
+@RequestMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
 @LandingContentApiSwagger
 @RestController
 class LandingContentApi {
     @LandingContentSwagger
-    @GetMapping(LANDING_CONTENT_URL, produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping(LANDING_CONTENT_URL)
     fun getLandingContent(): ApiResponse<List<LandingResponse>> {
         val randomLetters = letters.shuffled(Random(System.currentTimeMillis())).take(10)
         return ApiResponse(

@@ -1,6 +1,7 @@
 package wyship.doong2.http.letter
 
 import io.swagger.v3.oas.annotations.Operation
+import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -23,11 +24,10 @@ import java.time.LocalDate
 
 @LetterReadApiSwagger
 @RestController
-@RequestMapping(LETTER_URL)
+@RequestMapping(LETTER_URL, produces = [MediaType.APPLICATION_JSON_VALUE])
 class LetterReadApi(
     private val letterReadUseCase: LetterReadUseCase,
 ) {
-
     @Operation(
         summary = "편지 상세 조회",
         description = "읽을 수 있는 편지의 상세 정보를 조회합니다.",
@@ -36,12 +36,13 @@ class LetterReadApi(
     fun readDetailLetter(
         @LoginMember memberId: Long,
         @PathVariable letterId: Long,
-    ): ApiResponse<LetterDetailResponse> = letterReadUseCase
-        .readDetailLetter(memberId, letterId)
-        .toApiResponse(
-            onSuccess = { LetterDetailResponse.from(it) },
-            onFailure = { onFailure(it) },
-        )
+    ): ApiResponse<LetterDetailResponse> =
+        letterReadUseCase
+            .readDetailLetter(memberId, letterId)
+            .toApiResponse(
+                onSuccess = { LetterDetailResponse.from(it) },
+                onFailure = { onFailure(it) },
+            )
 
     @Operation(
         summary = "일간 편지 목록 정보 조회",
@@ -51,12 +52,13 @@ class LetterReadApi(
     fun readDailyLetters(
         @LoginMember memberId: Long,
         @RequestParam date: LocalDate,
-    ): ApiResponse<LettersDailyResponse> = letterReadUseCase
-        .readDailyReceivedLetters(memberId, date)
-        .toApiResponse(
-            onSuccess = { LettersDailyResponse.from(it) },
-            onFailure = { onFailure(it) },
-        )
+    ): ApiResponse<LettersDailyResponse> =
+        letterReadUseCase
+            .readDailyReceivedLetters(memberId, date)
+            .toApiResponse(
+                onSuccess = { LettersDailyResponse.from(it) },
+                onFailure = { onFailure(it) },
+            )
 
     @Operation(
         summary = "주간 편지 개수 정보 조회",
@@ -65,12 +67,13 @@ class LetterReadApi(
     @GetMapping("/count/weekly")
     fun readWeeklyCount(
         @LoginMember memberId: Long,
-    ): ApiResponse<LettersWeeklyCountResponse> = letterReadUseCase
-        .countWeeklyReceivedLetters(memberId)
-        .toApiResponse(
-            onSuccess = { LettersWeeklyCountResponse.from(it) },
-            onFailure = { onFailure(it) },
-        )
+    ): ApiResponse<LettersWeeklyCountResponse> =
+        letterReadUseCase
+            .countWeeklyReceivedLetters(memberId)
+            .toApiResponse(
+                onSuccess = { LettersWeeklyCountResponse.from(it) },
+                onFailure = { onFailure(it) },
+            )
 
     @Operation(
         summary = "편지 목록 조회 API",
@@ -81,12 +84,13 @@ class LetterReadApi(
         @LoginMember memberId: Long,
         @RequestParam year: Int,
         @RequestParam month: Int,
-    ): ApiResponse<LettersMonthlyResponse> = letterReadUseCase
-        .readMonthlyReceivedLetters(memberId, year, month)
-        .toApiResponse(
-            onSuccess = { LettersMonthlyResponse.from(it) },
-            onFailure = { onFailure(it) },
-        )
+    ): ApiResponse<LettersMonthlyResponse> =
+        letterReadUseCase
+            .readMonthlyReceivedLetters(memberId, year, month)
+            .toApiResponse(
+                onSuccess = { LettersMonthlyResponse.from(it) },
+                onFailure = { onFailure(it) },
+            )
 
     fun <T> onFailure(exception: Throwable): ApiResponse<T> {
         val letterException = exception as? LetterReadUseCaseException

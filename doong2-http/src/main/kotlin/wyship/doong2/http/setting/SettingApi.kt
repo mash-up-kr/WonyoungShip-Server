@@ -1,8 +1,10 @@
 package wyship.doong2.http.setting
 
+import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import wyship.doong2.core.setting.CurrentSettingQueryUseCase
 import wyship.doong2.core.setting.EmailAlarmChangeUseCase
@@ -15,6 +17,7 @@ import wyship.doong2.http.WITHDRAW_URL
 import wyship.doong2.http.config.LoginMember
 import wyship.doong2.http.toApiResponse
 
+@RequestMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
 @RestController
 class SettingApi(
     private val currentSettingQueryUseCase: CurrentSettingQueryUseCase,

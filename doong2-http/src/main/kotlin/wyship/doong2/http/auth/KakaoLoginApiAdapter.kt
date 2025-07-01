@@ -1,7 +1,9 @@
 package wyship.doong2.http.auth
 
+import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import wyship.doong2.core.auth.AuthenticateWithKakaoUseCase
 import wyship.doong2.core.auth.AuthenticateWithKakaoUseCase.AuthenticateWithKakaoUseCaseException
@@ -18,6 +20,7 @@ import wyship.doong2.http.auth.doc.KakaoLoginApiSwagger
 import wyship.doong2.http.auth.doc.KakaoLoginSwagger
 import wyship.doong2.http.toApiResponse
 
+@RequestMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
 @KakaoLoginApiSwagger
 @RestController
 class KakaoLoginApiAdapter(

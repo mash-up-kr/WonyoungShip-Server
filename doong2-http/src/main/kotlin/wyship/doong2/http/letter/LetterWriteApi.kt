@@ -1,5 +1,6 @@
 package wyship.doong2.http.letter
 
+import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -20,17 +21,17 @@ import wyship.doong2.http.toApiResponse
 
 @LetterWriteApiSwagger
 @RestController
-@RequestMapping(LETTER_URL)
+@RequestMapping(LETTER_URL, produces = [MediaType.APPLICATION_JSON_VALUE])
 class LetterWriteApi(
     private val letterWriteUseCase: LetterWriteUseCase,
 ) {
-
     @PatchMapping("/marked/{letterId}")
     fun markedLetter(
         @LoginMember memberId: Long,
         @PathVariable letterId: Long,
     ): ApiResponse<LetterMarkedResponse> =
-        letterWriteUseCase.markedLetter(memberId, letterId)
+        letterWriteUseCase
+            .markedLetter(memberId, letterId)
             .toApiResponse(
                 onSuccess = { LetterMarkedResponse(letterId, it) },
                 onFailure = { ApiResponse(HttpErrorType.INTERNAL_ERROR) },
