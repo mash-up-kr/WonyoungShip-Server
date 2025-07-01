@@ -68,10 +68,10 @@ class KakaoInfoAdapter(
                     }.body(KakaoUserInfoResponse::class.java) ?: throw KakaoLoginApiInternalException()
 
             val email =
-                userResponse.kakaoAccount.email
+                userResponse.kakaoAccount?.email
                     ?: throw KakaoEmailNotFoundException()
             val nickname =
-                userResponse.kakaoAccount.name
+                userResponse.kakaoAccount.profile?.nickname
                     ?: throw KakaoNameFailException()
 
             return@runCatching GetKakaoInfoResult(email = email, nickname = nickname)
@@ -87,12 +87,28 @@ class KakaoInfoAdapter(
 
     data class KakaoUserInfoResponse(
         @JsonProperty("id") val id: Long,
-        @JsonProperty("kakao_account") val kakaoAccount: KakaoAccount,
+        @JsonProperty("connected_at") val connectedAt: String,
+        @JsonProperty("properties") val properties: Properties?,
+        @JsonProperty("kakao_account") val kakaoAccount: KakaoAccount?,
+    )
+
+    data class Properties(
+        @JsonProperty("nickname") val nickname: String?,
     )
 
     data class KakaoAccount(
+        @JsonProperty("profile_nickname_needs_agreement") val nicknameAgreement: Boolean?,
         @JsonProperty("email") val email: String?,
-        @JsonProperty("name") val name: String?,
+        @JsonProperty("profile") val profile: KakaoProfile?,
+        @JsonProperty("has_email") val hasEmail: Boolean?,
+        @JsonProperty("email_needs_agreement") val emailNeedAgreement: Boolean?,
+        @JsonProperty("is_email_valid") val isEmailValid: Boolean?,
+        @JsonProperty("is_email_verified") val isEmailVerified: Boolean?,
+    )
+
+    data class KakaoProfile(
+        @JsonProperty("nickname") val nickname: String?,
+        @JsonProperty("is_default_nickname") val isDefaultNickname: Boolean?,
     )
 
     companion object {
