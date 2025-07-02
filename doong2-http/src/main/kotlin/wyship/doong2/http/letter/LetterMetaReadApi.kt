@@ -1,6 +1,7 @@
 package wyship.doong2.http.letter
 
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -14,6 +15,7 @@ import wyship.doong2.http.config.LoginMember
 import wyship.doong2.http.letter.model.LetterMetaReadResponse
 import wyship.doong2.http.toApiResponse
 
+@Tag(name = "편지 쓰기 API")
 @RestController
 @RequestMapping(LETTER_URL, produces = [MediaType.APPLICATION_JSON_VALUE])
 class LetterMetaReadApi(

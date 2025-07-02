@@ -1,5 +1,7 @@
 package wyship.doong2.http.auth
 
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -16,17 +18,18 @@ import wyship.doong2.core.auth.AuthenticateWithKakaoUseCase.MemberSignUpFailExce
 import wyship.doong2.http.ApiResponse
 import wyship.doong2.http.HttpErrorType
 import wyship.doong2.http.LOGIN_URL
-import wyship.doong2.http.auth.doc.KakaoLoginApiSwagger
-import wyship.doong2.http.auth.doc.KakaoLoginSwagger
 import wyship.doong2.http.toApiResponse
 
+@Tag(name = "카카오 로그인 API")
 @RequestMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
-@KakaoLoginApiSwagger
 @RestController
-class KakaoLoginApiAdapter(
+class KakaoLoginApi(
     private val authenticateWithKakaoUseCaseService: AuthenticateWithKakaoUseCase,
 ) {
-    @KakaoLoginSwagger
+    @Operation(
+        summary = "카카오 로그인",
+        description = "카카오 토큰으로 로그인합니다",
+    )
     @PostMapping(LOGIN_URL)
     fun kakaoLogin(
         @RequestBody request: KakaoLoginRequest,
