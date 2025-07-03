@@ -7,6 +7,7 @@ interface KakaoInfoPort {
 
     data class GetKakaoInfoQuery(
         val code: String,
+        val redirectUrl: String,
     )
 
     data class GetKakaoInfoResult(

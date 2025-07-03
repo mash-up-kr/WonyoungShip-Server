@@ -22,6 +22,7 @@ interface AuthenticateWithKakaoUseCase {
 
     data class KakaoLoginCommand(
         val token: String,
+        val redirectUrl: String,
     )
 
     data class KakaoLoginResult(
@@ -53,7 +54,7 @@ internal class AuthenticateWithKakaoService(
         runCatching {
             val (email, nickname) =
                 kakaoInfoPort
-                    .getKakaoInfo(GetKakaoInfoQuery(command.token))
+                    .getKakaoInfo(GetKakaoInfoQuery(command.token, command.redirectUrl))
                     .getOrElse { exception ->
                         if (exception is KaKaoInfoPortException) {
                             when (exception) {

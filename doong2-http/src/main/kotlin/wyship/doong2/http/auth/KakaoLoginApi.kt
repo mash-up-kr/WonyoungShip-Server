@@ -60,8 +60,9 @@ class KakaoLoginApi(
 
     data class KakaoLoginRequest(
         val token: String,
+        val url: String,
     ) {
-        fun toCommand(): KakaoLoginCommand = KakaoLoginCommand(token)
+        fun toCommand(): KakaoLoginCommand = KakaoLoginCommand(token = token, redirectUrl = url)
     }
 
     data class KakaoLoginResponse(

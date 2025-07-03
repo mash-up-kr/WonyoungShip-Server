@@ -19,7 +19,6 @@ import wyship.doong2.core.auth.port.KakaoInfoPort.KakaoNameFailException
 @Component
 class KakaoInfoAdapter(
     @Value("\${kakao.auth.clientId}") private val clientId: String,
-    @Value("\${kakao.auth.redirectUri}") private val redirectUri: String,
     private val restClient: RestClient,
 ) : KakaoInfoPort {
     override fun getKakaoInfo(query: GetKakaoInfoQuery): Result<GetKakaoInfoResult> =
@@ -28,7 +27,7 @@ class KakaoInfoAdapter(
                 LinkedMultiValueMap<String, String>().apply {
                     add("grant_type", "authorization_code")
                     add("client_id", clientId)
-                    add("redirect_uri", redirectUri)
+                    add("redirect_uri", query.redirectUrl)
                     add("code", query.code)
                 }
 
