@@ -1,5 +1,7 @@
 package wyship.doong2.http.letter
 
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -12,19 +14,21 @@ import wyship.doong2.http.ApiResponse
 import wyship.doong2.http.HttpErrorType
 import wyship.doong2.http.LETTER_URL
 import wyship.doong2.http.config.LoginMember
-import wyship.doong2.http.letter.doc.LetterWriteApiSwagger
-import wyship.doong2.http.letter.doc.LetterWriteSwagger
 import wyship.doong2.http.letter.model.LetterMarkedResponse
 import wyship.doong2.http.letter.model.LetterWriteRequest
 import wyship.doong2.http.letter.model.LetterWriteResponse
 import wyship.doong2.http.toApiResponse
 
-@LetterWriteApiSwagger
+@Tag(name = "편지 쓰기 API")
 @RestController
 @RequestMapping(LETTER_URL, produces = [MediaType.APPLICATION_JSON_VALUE])
 class LetterWriteApi(
     private val letterWriteUseCase: LetterWriteUseCase,
 ) {
+    @Operation(
+        summary = "편지 즐겨찾기 API",
+        description = "특정 편지를 즐겨찾기 합니다",
+    )
     @PatchMapping("/marked/{letterId}")
     fun markedLetter(
         @LoginMember memberId: Long,
@@ -37,7 +41,10 @@ class LetterWriteApi(
                 onFailure = { ApiResponse(HttpErrorType.INTERNAL_ERROR) },
             )
 
-    @LetterWriteSwagger
+    @Operation(
+        summary = "편지 작성 API",
+        description = "보내는 사람, 받는 사람, 메시지, 예약 날짜, 날씨, 음악, 닉네임, 포춘쿠키 정보를 포함해 편지를 작성합니다.",
+    )
     @PostMapping
     fun writeLetter(
         @LoginMember userId: Long?,
