@@ -30,6 +30,8 @@ data class LetterDetailResponse(
 }
 
 data class LetterMusicResponse(
+    val id: Long,
+    val isRecommend: Boolean,
     val title: String,
     val artist: String,
     val url: String,
@@ -37,6 +39,8 @@ data class LetterMusicResponse(
 ) {
     companion object {
         fun from(music: LetterMusic): LetterMusicResponse = LetterMusicResponse(
+            id = music.id,
+            isRecommend = music.isRecommend,
             title = music.title,
             artist = music.artist,
             url = music.url,
