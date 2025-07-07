@@ -14,7 +14,7 @@ class MemberTokenIdAcl(
 ) : MemberTokenIdPort {
     override fun getTokenId(email: String): Result<String> =
         memberQueryUseCase.getByEmailOrThrow(email).fold(
-            onSuccess = { result -> Result.success(result.email) },
+            onSuccess = { result -> Result.success(result.tokenId) },
             onFailure = { exception ->
                 when (exception) {
                     is MemberNotFoundByEmailException -> Result.failure(MemberNotFoundException())
