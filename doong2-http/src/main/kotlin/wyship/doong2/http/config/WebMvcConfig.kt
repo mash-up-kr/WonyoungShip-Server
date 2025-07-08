@@ -6,7 +6,6 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import wyship.doong2.http.LANDING_CONTENT_URL
 import wyship.doong2.http.LETTER_META_URL
-import wyship.doong2.http.LETTER_URL
 import wyship.doong2.http.LOGIN_URL
 
 @Configuration
