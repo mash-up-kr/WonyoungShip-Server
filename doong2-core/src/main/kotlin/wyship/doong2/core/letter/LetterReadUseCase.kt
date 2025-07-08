@@ -44,7 +44,7 @@ internal class LetterReadService(
         val firstMonthDate = LocalDate.of(year, month, FIRST_DAY_OF_MONTH)
         val startDate = firstMonthDate.minusDays(7)
         val today = LocalDate.now()
-        val endDate = firstMonthDate.withDayOfMonth(firstMonthDate.lengthOfMonth() + 7)
+        val endDate = firstMonthDate.withDayOfMonth(firstMonthDate.lengthOfMonth()).plusDays(7)
 
         val letters = letterQueryPort.findByReceiverIdAndScheduleDate(memberId, startDate, endDate)
             .getOrElse { throw it }

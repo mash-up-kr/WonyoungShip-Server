@@ -17,7 +17,7 @@ class WebMvcConfig(
         registry
             .addInterceptor(authInterceptor)
             .addPathPatterns("/api/**")
-            .excludePathPatterns(LOGIN_URL, LANDING_CONTENT_URL, LETTER_URL, LETTER_META_URL)
+            .excludePathPatterns(LOGIN_URL, LANDING_CONTENT_URL, LETTER_META_URL)
     }
 
     override fun addArgumentResolvers(resolvers: MutableList<HandlerMethodArgumentResolver>) {

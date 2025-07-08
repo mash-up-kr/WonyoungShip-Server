@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletResponse
 import org.springframework.stereotype.Component
 import org.springframework.web.servlet.HandlerInterceptor
 import wyship.doong2.core.auth.AuthenticateWithJwtUseCase
+import wyship.doong2.http.LETTER_URL
 
 @Component
 class AuthInterceptor(
@@ -15,6 +16,10 @@ class AuthInterceptor(
         response: HttpServletResponse,
         handler: Any,
     ): Boolean {
+        if (LETTER_URL.equals(request.requestURL) && "POST" == request.method) {
+            return true
+        }
+
         val authHeader = request.getHeader("Authorization") ?: return unauthorized(response)
         val token = authHeader.removePrefix("Bearer ").trim()
 
