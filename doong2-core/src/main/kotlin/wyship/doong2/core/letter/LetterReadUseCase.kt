@@ -18,13 +18,23 @@ import java.time.LocalDate
 import java.time.temporal.TemporalAdjusters
 
 interface LetterReadUseCase {
-    fun readMonthlyReceivedLetters(memberId: Long, year: Int, month: Int): Result<LettersMonthlyResult>
+    fun readMonthlyReceivedLetters(
+        memberId: Long,
+        year: Int,
+        month: Int,
+    ): Result<LettersMonthlyResult>
 
     fun countWeeklyReceivedLetters(memberId: Long): Result<LettersWeeklyCountResult>
 
-    fun readDailyReceivedLetters(memberId: Long, date: LocalDate): Result<LettersDailyResult>
+    fun readDailyReceivedLetters(
+        memberId: Long,
+        date: LocalDate,
+    ): Result<LettersDailyResult>
 
-    fun readDetailLetter(memberId: Long, letterId: Long): Result<LetterDetailResult>
+    fun readDetailLetter(
+        memberId: Long,
+        letterId: Long,
+    ): Result<LetterDetailResult>
 
     sealed class LetterReadUseCaseException : CommonException()
 
@@ -39,20 +49,26 @@ internal class LetterReadService(
     private val musicQueryPort: MusicQueryPort,
     private val fortuneCookieQueryPort: FortuneCookieQueryPort,
 ) : LetterReadUseCase {
-
-    override fun readMonthlyReceivedLetters(memberId: Long, year: Int, month: Int): Result<LettersMonthlyResult> {
+    override fun readMonthlyReceivedLetters(
+        memberId: Long,
+        year: Int,
+        month: Int,
+    ): Result<LettersMonthlyResult> {
         val firstMonthDate = LocalDate.of(year, month, FIRST_DAY_OF_MONTH)
         val startDate = firstMonthDate.minusDays(7)
         val today = LocalDate.now()
         val endDate = firstMonthDate.withDayOfMonth(firstMonthDate.lengthOfMonth()).plusDays(7)
 
-        val letters = letterQueryPort.findByReceiverIdAndScheduleDate(memberId, startDate, endDate)
-            .getOrElse { throw it }
+        val letters =
+            letterQueryPort
+                .findByReceiverIdAndScheduleDate(memberId, startDate, endDate)
+                .getOrElse { throw it }
 
-        val validLetters = letters
-            .map { LetterPreview.from(it) }
-            .filter { it.scheduleDate >= firstMonthDate && it.scheduleDate <= today }
-            .toList()
+        val validLetters =
+            letters
+                .map { LetterPreview.from(it) }
+                .filter { it.scheduleDate >= firstMonthDate && it.scheduleDate <= today }
+                .toList()
 
         return Result
             .success(
@@ -62,8 +78,7 @@ internal class LetterReadService(
                     letters = validLetters,
                     days = letters.map { it.scheduleDate }.distinct().toList(),
                 ),
-            )
-            .fold(
+            ).fold(
                 onSuccess = { Result.success(it) },
                 onFailure = { Result.failure(LetterReadUseCase.LetterFailExceptionRead()) },
             )
@@ -75,14 +90,17 @@ internal class LetterReadService(
             val monday = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
             val sunday = today.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY))
 
-            val lettersByDateMap = letterQueryPort.findByReceiverIdAndScheduleDate(memberId, monday, sunday)
-                .getOrThrow()
-                .groupBy { it.scheduleDate }
+            val lettersByDateMap =
+                letterQueryPort
+                    .findByReceiverIdAndScheduleDate(memberId, monday, sunday)
+                    .getOrThrow()
+                    .groupBy { it.scheduleDate }
 
-            val receivedCountPerDay = (0..6).map {
-                val date = monday.plusDays(it.toLong())
-                lettersByDateMap[date]?.size ?: 0
-            }
+            val receivedCountPerDay =
+                (0..6).map {
+                    val date = monday.plusDays(it.toLong())
+                    lettersByDateMap[date]?.size ?: 0
+                }
 
             val notViewedCount = letterQueryPort.countByReceiverIdAndViewed(memberId, false).getOrThrow()
 
@@ -92,23 +110,31 @@ internal class LetterReadService(
             )
         }
 
-    override fun readDailyReceivedLetters(memberId: Long, date: LocalDate): Result<LettersDailyResult> =
+    override fun readDailyReceivedLetters(
+        memberId: Long,
+        date: LocalDate,
+    ): Result<LettersDailyResult> =
         runCatching {
-            val letters = letterQueryPort.findByReceiverIdAndScheduleDate(memberId, date)
-                .getOrThrow()
-                .map { LetterPreview.from(it) }
-                .toList()
+            val letters =
+                letterQueryPort
+                    .findByReceiverIdAndScheduleDate(memberId, date)
+                    .getOrThrow()
+                    .map { LetterPreview.from(it) }
+                    .toList()
 
             return@runCatching LettersDailyResult(date, letters)
         }
 
     @Transactional
-    override fun readDetailLetter(memberId: Long, letterId: Long): Result<LetterDetailResult> =
+    override fun readDetailLetter(
+        memberId: Long,
+        letterId: Long,
+    ): Result<LetterDetailResult> =
         runCatching {
             val letter = letterQueryPort.findById(letterId).getOrThrow()
 
             if (letter.scheduleDate.isAfter(LocalDate.now()) || letter.receiverId != memberId) {
-                throw LetterQueryPort.LetterReadFailException()
+                throw LetterReadUseCase.LetterFailExceptionRead()
             }
 
             letter.viewed = true
@@ -116,10 +142,11 @@ internal class LetterReadService(
 
             val music = updatedLetter.musicId?.let { musicQueryPort.findById(it).getOrThrow() }
 
-            val fortuneCookieMessage = updatedLetter.fortuneCookieId
-                ?.let { fortuneCookieQueryPort.findById(it) }
-                ?.getOrDefault(null)
-                ?.text
+            val fortuneCookieMessage =
+                updatedLetter.fortuneCookieId
+                    ?.let { fortuneCookieQueryPort.findById(it) }
+                    ?.getOrDefault(null)
+                    ?.text
 
             return@runCatching LetterDetailResult.from(updatedLetter, music, fortuneCookieMessage)
         }
