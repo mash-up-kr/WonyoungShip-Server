@@ -19,7 +19,9 @@ class AuthInterceptor(
         if (LETTER_URL.equals(request.requestURL) && "POST" == request.method) {
             return true
         }
-
+        if ("OPTIONS" == request.method) {
+            return true
+        }
         val authHeader = request.getHeader("Authorization") ?: return unauthorized(response)
         val token = authHeader.removePrefix("Bearer ").trim()
 
