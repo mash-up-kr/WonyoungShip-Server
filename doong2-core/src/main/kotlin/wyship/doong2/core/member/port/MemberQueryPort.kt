@@ -6,12 +6,4 @@ interface MemberQueryPort {
     fun findMemberByTokenIdOrNull(tokenId: String): Member?
 
     fun findMemberByIdOrNull(id: Long): Member?
-
-    data class Member(
-        val id: Long,
-        val name: String,
-        val email: String,
-        val tokenId: String,
-        val emailAlarmAgreed: Boolean,
-    )
 }

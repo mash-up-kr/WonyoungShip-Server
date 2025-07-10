@@ -2,8 +2,8 @@ package wyship.doong2.persistence.member
 
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
+import wyship.doong2.core.member.port.Member
 import wyship.doong2.core.member.port.MemberQueryPort
-import wyship.doong2.core.member.port.MemberQueryPort.Member
 
 @Component
 class MemberQueryAdapter(

@@ -16,6 +16,11 @@ interface LetterRepository : JpaRepository<LetterEntity, Long> {
 
     fun findByReceiverMemberIdAndScheduleDate(receiverId: Long, scheduleDate: LocalDate): List<LetterEntity>
 
+    fun findLettersByScheduleDateBetween(
+        startDate: LocalDate,
+        endDate: LocalDate,
+    ): List<LetterEntity>
+
     /**
      * count
      */

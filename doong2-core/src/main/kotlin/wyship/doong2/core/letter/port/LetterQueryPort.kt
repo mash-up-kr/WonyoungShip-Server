@@ -20,6 +20,13 @@ interface LetterQueryPort {
 
     fun findById(letterId: Long): Result<Letter>
 
+    fun findLettersByScheduleDateBetween(
+        startDate: LocalDate,
+        endDate: LocalDate,
+    ): Result<List<Letter>>
+
+    fun findLettersByIds(todayLetterIds: List<Long>): Result<List<Letter>>
+
     /**
      * count
      */
