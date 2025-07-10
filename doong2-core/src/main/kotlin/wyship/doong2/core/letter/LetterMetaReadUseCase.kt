@@ -3,6 +3,7 @@ package wyship.doong2.core.letter
 import org.springframework.stereotype.Service
 import wyship.doong2.core.exception.CommonException
 import wyship.doong2.core.letter.model.command.LetterMetaReadCommand
+import wyship.doong2.core.letter.model.command.LetterWritingType
 import wyship.doong2.core.letter.model.result.LetterMetaReadResult
 import wyship.doong2.core.letter.model.result.LetterMusic
 import wyship.doong2.core.member.port.MemberQueryPort
@@ -24,13 +25,21 @@ internal class LetterMetaReadService(
 
     override fun read(command: LetterMetaReadCommand): Result<LetterMetaReadResult> = runCatching {
         val sender = command.senderId?.let { memberQueryPort.findMemberByIdOrNull(it) }
-        val receiver = memberQueryPort.findMemberByIdOrNull(command.receiverId)
-            ?: throw LetterMetaReadUseCase.LetterMetaReadFailException()
         val musics = musicQueryPort.findAll().getOrThrow()
+
+        val receiverNickname = when (command.type) {
+            LetterWritingType.SELF -> "To. 나에게"
+            LetterWritingType.RANDOM -> ""
+            LetterWritingType.TARGET -> {
+                val receiver = command.receiverId?.let { memberQueryPort.findMemberByIdOrNull(it) }
+                    ?: throw LetterMetaReadUseCase.LetterMetaReadFailException()
+                "To. ${receiver.name}에게"
+            }
+        }
 
         LetterMetaReadResult(
             senderNickname = sender?.name,
-            receiverNickname = receiver.name,
+            receiverNickname = receiverNickname,
             musics = LetterMusic.from(musics),
         )
     }

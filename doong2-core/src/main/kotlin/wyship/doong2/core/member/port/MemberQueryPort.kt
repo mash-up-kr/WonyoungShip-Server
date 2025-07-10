@@ -6,4 +6,5 @@ interface MemberQueryPort {
     fun findMemberByTokenIdOrNull(tokenId: String): Member?
 
     fun findMemberByIdOrNull(id: Long): Member?
+    fun findAllMembers(): List<Member>
 }

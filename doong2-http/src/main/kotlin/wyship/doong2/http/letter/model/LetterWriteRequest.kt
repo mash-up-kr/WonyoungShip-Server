@@ -2,10 +2,11 @@ package wyship.doong2.http.letter.model
 
 import wyship.doong2.core.letter.domain.WeatherType
 import wyship.doong2.core.letter.model.command.LetterWriteCommand
+import wyship.doong2.core.letter.model.command.LetterWritingType
 import java.time.LocalDate
 
 data class LetterWriteRequest(
-    val receiverId: Long,
+    val receiverId: Long?,
     val content: String,
     val scheduleDate: LocalDate,
     val weather: WeatherType,
@@ -13,7 +14,7 @@ data class LetterWriteRequest(
     val senderNickname: String,
     val needFortuneCookie: Boolean,
 ) {
-    fun toCommand(userId: Long?): LetterWriteCommand = LetterWriteCommand(
+    fun toCommand(userId: Long?, type: LetterWritingType): LetterWriteCommand = LetterWriteCommand(
         senderId = userId,
         receiverId = receiverId,
         content = content,
@@ -22,5 +23,6 @@ data class LetterWriteRequest(
         musicId = musicId,
         senderNickname = senderNickname,
         needFortuneCookie = needFortuneCookie,
+        type = type,
     )
 }

@@ -35,6 +35,12 @@ class MemberQueryAdapter(
             .findMemberById(id)
             ?.let { Member(it.id!!, it.nickname, it.email, it.tokenId, it.emailAlarmAgreed) }
 
+    @Transactional
+    override fun findAllMembers(): List<Member> =
+        memberRepository.findAll()
+            .filter { it.id != null }
+            .map { Member(it.id!!, it.nickname, it.email, it.tokenId, it.emailAlarmAgreed) }
+
     private fun filterSoftDeleted(): (wyship.doong2.persistence.member.MemberEntity) -> Boolean =
         { it.deletedAt == null }
 }

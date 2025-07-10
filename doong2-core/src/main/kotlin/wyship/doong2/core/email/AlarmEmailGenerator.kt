@@ -24,4 +24,4 @@ object AlarmEmailGenerator {
         }
         return emails
     }
-} 
+}

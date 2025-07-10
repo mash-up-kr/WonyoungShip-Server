@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import wyship.doong2.core.letter.LetterWriteUseCase
+import wyship.doong2.core.letter.model.command.LetterWritingType
 import wyship.doong2.http.ApiResponse
 import wyship.doong2.http.HttpErrorType
 import wyship.doong2.http.LETTER_URL
@@ -43,15 +45,16 @@ class LetterWriteApi(
 
     @Operation(
         summary = "편지 작성 API",
-        description = "보내는 사람, 받는 사람, 메시지, 예약 날짜, 날씨, 음악, 닉네임, 포춘쿠키 정보를 포함해 편지를 작성합니다.",
+        description = "보내는 사람, 받는 사람, 메시지, 예약 날짜, 날씨, 음악, 닉네임, 포춘쿠키를 바디로, 타입(TARGET/SELF/RANDOM)은 쿼리스트링으로 받습니다.",
     )
     @PostMapping
     fun writeLetter(
         @LoginMember userId: Long?,
+        @RequestParam type: LetterWritingType,
         @RequestBody request: LetterWriteRequest,
     ): ApiResponse<LetterWriteResponse> =
         letterWriteUseCase
-            .write(request.toCommand(userId))
+            .write(request.toCommand(userId, type))
             .toApiResponse(
                 onSuccess = { LetterWriteResponse(it.letterId) },
                 onFailure = { ApiResponse(HttpErrorType.INTERNAL_ERROR) },
