@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import wyship.doong2.core.letter.LetterMetaReadUseCase
 import wyship.doong2.core.letter.model.command.LetterMetaReadCommand
+import wyship.doong2.core.letter.model.command.LetterWritingType
 import wyship.doong2.http.ApiResponse
 import wyship.doong2.http.LETTER_URL
 import wyship.doong2.http.config.LoginMember
@@ -28,10 +29,11 @@ class LetterMetaReadApi(
     @GetMapping("/meta")
     fun readLetterMeta(
         @LoginMember memberId: Long?,
-        @RequestParam receiverId: Long,
+        @RequestParam type: LetterWritingType,
+        @RequestParam receiverId: Long?,
     ): ApiResponse<LetterMetaReadResponse> =
         letterMetaReadUseCase
-            .read(LetterMetaReadCommand(senderId = memberId, receiverId = receiverId))
+            .read(LetterMetaReadCommand(senderId = memberId, receiverId = receiverId, type = type))
             .toApiResponse(
                 onSuccess = { LetterMetaReadResponse.from(it) },
                 onFailure = { throw it },

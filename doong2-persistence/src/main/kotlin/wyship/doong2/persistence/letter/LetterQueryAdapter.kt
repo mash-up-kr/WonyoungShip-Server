@@ -58,6 +58,18 @@ class LetterQueryAdapter(
         }.orElseThrow { error("일치하는 letter 없음. id=$letterId") }
     }
 
+    override fun findLettersByScheduleDateBetween(startDate: LocalDate, endDate: LocalDate): Result<List<Letter>> =
+        runCatching {
+            return@runCatching letterRepository.findLettersByScheduleDateBetween(startDate, endDate)
+                .mapNotNull { it.toDomain() }
+        }
+
+    override fun findLettersByIds(todayLetterIds: List<Long>): Result<List<Letter>> =
+        runCatching {
+            return@runCatching letterRepository.findAllById(todayLetterIds)
+                .mapNotNull { it.toDomain() }
+        }
+
     override fun countByReceiverIdAndViewed(receiverId: Long, viewed: Boolean): Result<Long> =
         runCatching {
             return@runCatching letterRepository.countByReceiverMemberIdAndViewed(receiverId, viewed)

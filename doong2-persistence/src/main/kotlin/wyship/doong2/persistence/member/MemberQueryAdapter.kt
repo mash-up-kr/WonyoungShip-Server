@@ -2,8 +2,8 @@ package wyship.doong2.persistence.member
 
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
+import wyship.doong2.core.member.port.Member
 import wyship.doong2.core.member.port.MemberQueryPort
-import wyship.doong2.core.member.port.MemberQueryPort.Member
 
 @Component
 class MemberQueryAdapter(
@@ -34,6 +34,12 @@ class MemberQueryAdapter(
         memberRepository
             .findMemberById(id)
             ?.let { Member(it.id!!, it.nickname, it.email, it.tokenId, it.emailAlarmAgreed) }
+
+    @Transactional
+    override fun findAllMembers(): List<Member> =
+        memberRepository.findAll()
+            .filter { it.id != null }
+            .map { Member(it.id!!, it.nickname, it.email, it.tokenId, it.emailAlarmAgreed) }
 
     private fun filterSoftDeleted(): (wyship.doong2.persistence.member.MemberEntity) -> Boolean =
         { it.deletedAt == null }

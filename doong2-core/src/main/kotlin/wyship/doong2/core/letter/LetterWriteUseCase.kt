@@ -5,10 +5,12 @@ import org.springframework.transaction.annotation.Transactional
 import wyship.doong2.core.exception.CommonException
 import wyship.doong2.core.fortunecookie.port.FortuneCookieQueryPort
 import wyship.doong2.core.letter.model.command.LetterWriteCommand
+import wyship.doong2.core.letter.model.command.LetterWritingType
 import wyship.doong2.core.letter.model.result.LetterWriteResult
 import wyship.doong2.core.letter.port.LetterQueryPort
 import wyship.doong2.core.letter.port.LetterSavePort
 import wyship.doong2.core.letter.port.LetterUpdatePort
+import wyship.doong2.core.member.port.MemberQueryPort
 
 interface LetterWriteUseCase {
     fun write(command: LetterWriteCommand): Result<LetterWriteResult>
@@ -27,16 +29,26 @@ internal class LetterWriteService(
     private val letterQueryPort: LetterQueryPort,
     private val letterUpdatePort: LetterUpdatePort,
     private val fortuneCookieQueryPort: FortuneCookieQueryPort,
+    private val memberQueryPort: MemberQueryPort,
 ) : LetterWriteUseCase {
 
     override fun write(command: LetterWriteCommand): Result<LetterWriteResult> = runCatching {
+        val receiverId: Long = when (command.type) {
+            LetterWritingType.TARGET -> command.receiverId ?: throw LetterWriteUseCase.LetterWriteFailException()
+            LetterWritingType.SELF -> command.senderId ?: throw LetterWriteUseCase.LetterWriteFailException()
+            LetterWritingType.RANDOM -> {
+                val allMembers = memberQueryPort.findAllMembers()
+                if (allMembers.isEmpty()) throw LetterWriteUseCase.LetterWriteFailException()
+                allMembers.random().id
+            }
+        }
         val fortuneCookieId = command.takeIf { it.needFortuneCookie }
             ?.let { fortuneCookieQueryPort.findRandomByWeatherType(it.weather).getOrNull()?.id }
 
         val result = letterSavePort.saveLetter(
             LetterSavePort.SaveLetterCommand(
                 senderId = command.senderId,
-                receiverId = command.receiverId,
+                receiverId = receiverId,
                 content = command.content,
                 scheduleDate = command.scheduleDate,
                 weather = command.weather,
@@ -46,7 +58,7 @@ internal class LetterWriteService(
             ),
         ).getOrElse { throw it }
 
-        return@runCatching LetterWriteResult(letterId = result.letterId)
+        LetterWriteResult(letterId = result.letterId)
     }
 
     override fun markedLetter(memberId: Long, letterId: Long): Result<Boolean> =
