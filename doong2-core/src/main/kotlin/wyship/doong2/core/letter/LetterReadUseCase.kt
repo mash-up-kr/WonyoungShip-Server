@@ -140,7 +140,7 @@ internal class LetterReadService(
             letter.viewed = true
             val updatedLetter = letterUpdatePort.updateLetter(LetterUpdateCommand.from(letter)).getOrThrow()
 
-            val music = updatedLetter.musicId?.let { musicQueryPort.findById(it).getOrThrow() }
+            val music = updatedLetter.musicId?.let { musicQueryPort.findById(it).getOrNull() }
 
             val fortuneCookieMessage =
                 updatedLetter.fortuneCookieId
