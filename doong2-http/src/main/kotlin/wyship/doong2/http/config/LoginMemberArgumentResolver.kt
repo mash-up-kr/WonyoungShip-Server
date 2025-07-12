@@ -10,7 +10,7 @@ import org.springframework.web.method.support.ModelAndViewContainer
 class LoginMemberArgumentResolver : HandlerMethodArgumentResolver {
     override fun supportsParameter(parameter: MethodParameter): Boolean =
         parameter.hasParameterAnnotation(LoginMember::class.java) &&
-            parameter.parameterType == Long::class.java
+            (parameter.parameterType == Long::class.java || parameter.parameterType == Long::class.javaObjectType)
 
     override fun resolveArgument(
         parameter: MethodParameter,
@@ -19,6 +19,8 @@ class LoginMemberArgumentResolver : HandlerMethodArgumentResolver {
         binderFactory: WebDataBinderFactory?,
     ): Any? {
         val request = webRequest.nativeRequest as HttpServletRequest
-        return request.getAttribute("memberId")
+        val memberId = request.getAttribute("memberId")
+
+        return memberId
     }
 }

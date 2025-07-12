@@ -17,17 +17,27 @@ class AuthInterceptor(
         response: HttpServletResponse,
         handler: Any,
     ): Boolean {
-        if (TAG_URL.equals(request.requestURL) && "GET" == request.method) {
-            return true
-        }
-        if (LETTER_URL.equals(request.requestURL) && "POST" == request.method) {
+        if (TAG_URL.equals(request.requestURI) && "GET" == request.method) {
             return true
         }
         if ("OPTIONS" == request.method) {
             return true
         }
-        val authHeader = request.getHeader("Authorization") ?: return unauthorized(response)
-        val token = authHeader.removePrefix("Bearer ").trim()
+
+        val authHeader = request.getHeader("Authorization")
+
+        if (LETTER_URL.equals(request.requestURI) && "POST" == request.method) {
+            if (authHeader != null) {
+                val token = authHeader.removePrefix("Bearer ").trim()
+                val memberId = authenticateWithJwtUseCase.authenticateAndGetId(token).getOrNull()
+                if (memberId != null) {
+                    request.setAttribute("memberId", memberId)
+                }
+            }
+            return true
+        }
+
+        val token = authHeader?.removePrefix("Bearer ")?.trim() ?: return unauthorized(response)
 
         val memberId =
             authenticateWithJwtUseCase
