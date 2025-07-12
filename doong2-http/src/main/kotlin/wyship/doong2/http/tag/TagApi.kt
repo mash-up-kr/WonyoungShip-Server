@@ -15,7 +15,7 @@ import wyship.doong2.http.tag.model.TagResponse
 import io.swagger.v3.oas.annotations.tags.Tag as SwaggerTag
 
 @SwaggerTag(name = "태그 API")
-@RequestMapping("/tag", produces = [MediaType.APPLICATION_JSON_VALUE])
+@RequestMapping("/api/tag", produces = [MediaType.APPLICATION_JSON_VALUE])
 @RestController
 class TagApi(
     private val tagRegisterUseCase: TagRegisterUseCase,

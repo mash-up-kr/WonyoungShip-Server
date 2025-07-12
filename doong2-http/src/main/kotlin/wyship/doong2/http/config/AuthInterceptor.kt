@@ -17,7 +17,7 @@ class AuthInterceptor(
         response: HttpServletResponse,
         handler: Any,
     ): Boolean {
-        if (TAG_URL.equals(request.requestURI) && "GET" == request.method) {
+        if (request.requestURI.startsWith(TAG_URL) && "GET" == request.method) {
             return true
         }
         if ("OPTIONS" == request.method) {
