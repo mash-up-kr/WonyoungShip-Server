@@ -14,7 +14,7 @@ class CorsConfig : WebMvcConfigurer {
                 "https://wonyoung-ship-web.vercel.app",
                 "https://api.doongdoong.org",
                 "https://www.doongdoong.org",
-            ).allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+            ).allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
             .allowedHeaders("*")
             .allowCredentials(true)
     }
