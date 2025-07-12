@@ -1,5 +1,6 @@
 package wyship.doong2.http.letter.model
 
+import io.swagger.v3.oas.annotations.media.Schema
 import wyship.doong2.core.letter.domain.WeatherType
 import wyship.doong2.core.letter.model.command.LetterWriteCommand
 import wyship.doong2.core.letter.model.command.LetterWritingType
@@ -10,6 +11,7 @@ data class LetterWriteRequest(
     val content: String,
     val scheduleDate: LocalDate,
     val weather: WeatherType,
+    @Schema(description = "음악 ID (선택)", nullable = true, required = false)
     val musicId: Long?,
     val senderNickname: String,
     val needFortuneCookie: Boolean,
