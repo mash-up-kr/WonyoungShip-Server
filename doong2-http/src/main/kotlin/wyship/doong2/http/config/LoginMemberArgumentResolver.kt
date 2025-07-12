@@ -21,10 +21,6 @@ class LoginMemberArgumentResolver : HandlerMethodArgumentResolver {
         val request = webRequest.nativeRequest as HttpServletRequest
         val memberId = request.getAttribute("memberId")
 
-        return if (parameter.parameterType == Long::class.javaObjectType) {
-            memberId
-        } else {
-            memberId ?: 0L
-        }
+        return memberId
     }
 }
