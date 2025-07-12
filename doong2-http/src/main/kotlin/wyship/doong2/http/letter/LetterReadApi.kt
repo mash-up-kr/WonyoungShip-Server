@@ -71,7 +71,7 @@ class LetterReadApi(
         letterReadUseCase
             .countWeeklyReceivedLetters(memberId)
             .toApiResponse(
-                onSuccess = { LettersWeeklyCountResponse.from(it) },
+                onSuccess = { LettersWeeklyCountResponse.from(it, memberId) },
                 onFailure = { onFailure(it) },
             )
 
