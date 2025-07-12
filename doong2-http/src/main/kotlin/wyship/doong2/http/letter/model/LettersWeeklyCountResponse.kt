@@ -8,10 +8,11 @@ data class LettersWeeklyCountResponse(
     val receiverId: Long,
 ) {
     companion object {
-        fun from(result: LettersWeeklyCountResult, receiverId: Long): LettersWeeklyCountResponse = LettersWeeklyCountResponse(
-            notViewedCount = result.notViewedCount,
-            receivedCountPerDay = result.receivedCountPerDay,
-            receiverId = receiverId,
-        )
+        fun from(result: LettersWeeklyCountResult, receiverId: Long): LettersWeeklyCountResponse =
+            LettersWeeklyCountResponse(
+                notViewedCount = result.notViewedCount,
+                receivedCountPerDay = result.receivedCountPerDay,
+                receiverId = receiverId,
+            )
     }
 }
