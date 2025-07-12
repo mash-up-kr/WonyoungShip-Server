@@ -5,13 +5,12 @@ import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import wyship.doong2.core.tag.TagRegisterUseCase
 import wyship.doong2.http.ApiResponse
 import wyship.doong2.http.HttpErrorType
-import wyship.doong2.http.tag.model.RegisterTagRequest
+import wyship.doong2.http.config.LoginMember
 import wyship.doong2.http.tag.model.TagResponse
 import io.swagger.v3.oas.annotations.tags.Tag as SwaggerTag
 
@@ -42,11 +41,11 @@ class TagApi(
     )
     @PostMapping("/{tag}")
     fun registerTag(
+        @LoginMember memberId: Long,
         @PathVariable tag: String,
-        @RequestBody request: RegisterTagRequest,
     ): ApiResponse<TagResponse> =
         runCatching {
-            val tagObj = tagRegisterUseCase.registerTag(tag, request.memberId)
+            val tagObj = tagRegisterUseCase.registerTag(tag, memberId)
             ApiResponse.success(TagResponse(tagObj.id, tagObj.tag, tagObj.memberId))
         }.getOrElse {
             ApiResponse(HttpErrorType.INTERNAL_ERROR)

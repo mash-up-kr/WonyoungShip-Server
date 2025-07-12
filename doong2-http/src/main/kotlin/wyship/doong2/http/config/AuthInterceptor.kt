@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component
 import org.springframework.web.servlet.HandlerInterceptor
 import wyship.doong2.core.auth.AuthenticateWithJwtUseCase
 import wyship.doong2.http.LETTER_URL
+import wyship.doong2.http.TAG_URL
 
 @Component
 class AuthInterceptor(
@@ -16,6 +17,9 @@ class AuthInterceptor(
         response: HttpServletResponse,
         handler: Any,
     ): Boolean {
+        if (TAG_URL.equals(request.requestURL) && "GET" == request.method) {
+            return true
+        }
         if (LETTER_URL.equals(request.requestURL) && "POST" == request.method) {
             return true
         }
